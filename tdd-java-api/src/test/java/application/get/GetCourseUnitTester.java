@@ -24,6 +24,8 @@ public class GetCourseUnitTester {
 		// Specify the action and result of calling a mock method
 		when(inMemoryMock.getCourse("123"))
 			.thenReturn(Optional.of(new Course("123", "Course title")));
+		
+		// Car to receive compared to the one the repo returns
 		Course toRetrieve = new Course("123", "Course title");
 		Course retreieved = getCourse.getCourseById("123");
 		assertEquals(toRetrieve.getIdValue(), retreieved.getIdValue());

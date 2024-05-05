@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Objects;
 
 final public class Course {
 	private CourseId id;
@@ -24,4 +25,23 @@ final public class Course {
 	public void updateCourseTitle(String title) {
 		this.title = new CourseTitle(title);
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Course other = (Course) obj;
+		return Objects.equals(id, other.id);
+	}
+	
+	
 }
