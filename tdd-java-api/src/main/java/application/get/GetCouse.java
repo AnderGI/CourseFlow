@@ -16,7 +16,8 @@ final public class GetCouse {
 	}
 
 	public Course getCourseById(String id) {
-		return repository.getCourse(id).orElse(null);
+		Course course = repository.getCourse(id).orElse(null);
+		return course;
 	}
 
 }
