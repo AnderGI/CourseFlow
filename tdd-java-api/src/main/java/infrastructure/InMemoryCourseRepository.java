@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import domain.Course;
 import domain.CourseRepository;
+import domain.InvalidArgumentException;
 
 final public class InMemoryCourseRepository implements CourseRepository {
 	private List<Course> database = new ArrayList<>();
@@ -14,7 +15,12 @@ final public class InMemoryCourseRepository implements CourseRepository {
 	
 	@Override
 	public Optional<Course> getCourse(String id) {
-		database.add(new Course("123", "Course Title"));
+		try {
+			database.add(new Course("123", "Course Title"));
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(database);
 		// TODO Auto-generated method stub
 		return database.stream()

@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 
 import domain.Course;
 import domain.CourseRepository;
+import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
 
 public class GetCourseUnitTester {
@@ -21,11 +22,24 @@ public class GetCourseUnitTester {
 		// Dependency Inversion for the repository using mocks
 		GetCouse getCourse = new GetCouse(inMemoryMock);
 		// Specify the action and result of calling a mock method
-		when(inMemoryMock.getCourse("123")).thenReturn(Optional.of(new Course("123", "Course title")));
+		Course course = null; 
+		try {
+			course = new Course("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		when(inMemoryMock.getCourse("a87df656-c710-416d-81b6-fe341c2589e8")).thenReturn(Optional.of(course));
 
 		// Car to receive compared to the one the repo returns
-		Course toRetrieve = new Course("123", "Course title");
-		Course retreieved = getCourse.getCourseById("123");
+		Course toRetrieve = null; 
+		try {
+			toRetrieve = new Course("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Course retreieved = getCourse.getCourseById("a87df656-c710-416d-81b6-fe341c2589e8");
 		assertEquals(toRetrieve, retreieved);
 	}
 

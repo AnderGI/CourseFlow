@@ -9,6 +9,7 @@ import application.get.GetCouse;
 import domain.Course;
 import domain.CourseId;
 import domain.CourseTitle;
+import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
 
 public class InMemoryRepositoyIntegrationTesting {
@@ -16,7 +17,13 @@ public class InMemoryRepositoyIntegrationTesting {
 	void it_should_get_an_existing_course_from_database() {
 		InMemoryCourseRepository repo = new InMemoryCourseRepository();
 		GetCouse useCase = new GetCouse(repo);
-		Course toRetrieveCourse = new Course("123","Course Title");
+		Course toRetrieveCourse = null;
+		try {
+			toRetrieveCourse = new Course("123","Course Title");
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Course retrievedCourse = useCase.getCourseById("123");
 		assertNotNull(retrievedCourse);
 		assertEquals(Course.class, retrievedCourse.getClass());
