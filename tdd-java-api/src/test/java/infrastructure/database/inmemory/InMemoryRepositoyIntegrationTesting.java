@@ -19,12 +19,12 @@ public class InMemoryRepositoyIntegrationTesting {
 		GetCouse useCase = new GetCouse(repo);
 		Course toRetrieveCourse = null;
 		try {
-			toRetrieveCourse = new Course("123","Course Title");
+			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
 		} catch (InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Course retrievedCourse = useCase.getCourseById("123");
+		Course retrievedCourse = useCase.getCourseById("a87df656-c710-416d-81b6-fe341c2589e8");
 		assertNotNull(retrievedCourse);
 		assertEquals(Course.class, retrievedCourse.getClass());
 		assertEquals(toRetrieveCourse, retrievedCourse);
