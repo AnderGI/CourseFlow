@@ -6,9 +6,14 @@ final public class Course {
 	private CourseId id;
 	private CourseTitle title;
 	
-	public Course(String id, String title) throws InvalidArgumentException {
+	private Course(String id, String title) throws InvalidArgumentException {
 		this.id = new CourseId(id); 
 		this.title = new CourseTitle(title); 
+	}
+	
+	public static Course createFromPrimitives(String id, String title) throws InvalidArgumentException {
+		Course newCourse = new Course(id, title);
+		return newCourse;
 	}
 	
 	public String getIdValue() {

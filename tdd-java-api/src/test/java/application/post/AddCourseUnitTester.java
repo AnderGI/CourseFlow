@@ -17,7 +17,7 @@ public class AddCourseUnitTester {
 	void it_should_add_a_course() {
 		Course validCourse = null;
 		try {
-			validCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
+			validCourse = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
 		}catch(InvalidArgumentException exp) {
 			exp.printStackTrace();
 		}

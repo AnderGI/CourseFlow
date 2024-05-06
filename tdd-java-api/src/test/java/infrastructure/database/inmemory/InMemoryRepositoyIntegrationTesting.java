@@ -20,7 +20,7 @@ public class InMemoryRepositoyIntegrationTesting {
 		CourseSaver useCase = new CourseSaver(repo);
 		Course toRetrieveCourse = null;
 		try {
-			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
+			toRetrieveCourse = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
 		} catch (InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,7 +34,7 @@ public class InMemoryRepositoyIntegrationTesting {
 		// Save a course
 		Course newCourse = null;
 		try {
-			newCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
+			newCourse = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
 		} catch (InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

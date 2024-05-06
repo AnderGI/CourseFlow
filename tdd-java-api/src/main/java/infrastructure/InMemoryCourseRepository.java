@@ -15,14 +15,6 @@ final public class InMemoryCourseRepository implements CourseRepository {
 	
 	@Override
 	public Optional<Course> getCourse(String id) {
-		try {
-			database.add(new Course("123", "Course Title"));
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(database);
-		// TODO Auto-generated method stub
 		return database.stream()
 				.filter(c -> c.getIdValue().equals(id))
 				.findFirst();

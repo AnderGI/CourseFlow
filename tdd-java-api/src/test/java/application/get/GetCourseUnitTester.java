@@ -24,7 +24,7 @@ public class GetCourseUnitTester {
 		// Specify the action and result of calling a mock method
 		Course course = null; 
 		try {
-			course = new Course("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
+			course = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
 		} catch (InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,7 +34,7 @@ public class GetCourseUnitTester {
 		// Car to receive compared to the one the repo returns
 		Course toRetrieve = null; 
 		try {
-			toRetrieve = new Course("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
+			toRetrieve = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
 		} catch (InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
