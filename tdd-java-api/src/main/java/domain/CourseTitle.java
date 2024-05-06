@@ -10,6 +10,11 @@ final public class CourseTitle {
 		this.value = title;
 	}
 	
+	private void ensureTitleIsValid(String title) throws InvalidArgumentException{
+		if(title.isBlank()) {
+			throw new InvalidArgumentException("Course title does not have valid format: " + title);
+		}
+	}
 	public String getValue() {
 		return value;
 	}

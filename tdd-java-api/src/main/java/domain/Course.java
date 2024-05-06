@@ -6,7 +6,7 @@ final public class Course {
 	private CourseId id;
 	private CourseTitle title;
 	
-	public Course(String id, String title) {
+	public Course(String id, String title) throws InvalidArgumentException {
 		this.id = new CourseId(id); 
 		this.title = new CourseTitle(title); 
 	}
