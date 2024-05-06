@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
 import application.get.CourseGetter;
+import application.get.CourseSaver;
 import domain.Course;
 import domain.CourseId;
 import domain.CourseTitle;
@@ -14,9 +15,9 @@ import infrastructure.InMemoryCourseRepository;
 
 public class InMemoryRepositoyIntegrationTesting {
 	@Test
-	void it_should_get_an_existing_course_from_database() {
+	void it_should_add_a_course() {
 		InMemoryCourseRepository repo = new InMemoryCourseRepository();
-		CourseGetter useCase = new CourseGetter(repo);
+		CourseSaver useCase = new CourseSaver(repo);
 		Course toRetrieveCourse = null;
 		try {
 			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
@@ -24,10 +25,28 @@ public class InMemoryRepositoyIntegrationTesting {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Course retrievedCourse = useCase.getCourseById("a87df656-c710-416d-81b6-fe341c2589e8");
+		
+		useCase.saveCourse(toRetrieveCourse);
+	}
+	@Test
+	void it_should_get_an_existing_course_from_database() {
+		InMemoryCourseRepository repo = new InMemoryCourseRepository();
+		// Save a course
+		Course newCourse = null;
+		try {
+			newCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		CourseSaver saver = new CourseSaver(repo);
+		saver.saveCourse(newCourse);
+		// Get the course
+		CourseGetter getter = new CourseGetter(repo);
+		Course retrievedCourse = getter.getCourseById(newCourse.getIdValue());
 		assertNotNull(retrievedCourse);
 		assertEquals(Course.class, retrievedCourse.getClass());
-		assertEquals(toRetrieveCourse, retrievedCourse);
+		assertEquals(newCourse, retrievedCourse);
 	}
 
 	@Test
@@ -38,17 +57,6 @@ public class InMemoryRepositoyIntegrationTesting {
 		assertEquals(null, retrievedCourse);
 	}
 	
-	@Test
-	void it_should_add_a_course() {
-		InMemoryCourseRepository repo = new InMemoryCourseRepository();
-		CourseGetter useCase = new CourseGetter(repo);
-		Course toRetrieveCourse = null;
-		try {
-			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	
 }
