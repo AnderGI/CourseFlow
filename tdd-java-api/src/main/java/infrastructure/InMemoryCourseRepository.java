@@ -28,4 +28,11 @@ final public class InMemoryCourseRepository implements CourseRepository {
 				.findFirst();
 	}
 
+
+	@Override
+	public void saveCourse(Course course) {
+		// TODO Auto-generated method stub
+		database.add(course);		
+	}
+
 }
