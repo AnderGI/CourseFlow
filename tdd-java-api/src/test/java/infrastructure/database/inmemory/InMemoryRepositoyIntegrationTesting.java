@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import application.get.GetCouse;
+import application.get.CourseGetter;
 import domain.Course;
 import domain.CourseId;
 import domain.CourseTitle;
@@ -16,7 +16,7 @@ public class InMemoryRepositoyIntegrationTesting {
 	@Test
 	void it_should_get_an_existing_course_from_database() {
 		InMemoryCourseRepository repo = new InMemoryCourseRepository();
-		GetCouse useCase = new GetCouse(repo);
+		CourseGetter useCase = new CourseGetter(repo);
 		Course toRetrieveCourse = null;
 		try {
 			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
@@ -33,9 +33,22 @@ public class InMemoryRepositoyIntegrationTesting {
 	@Test
 	void it_should_not_get_an_inexisting_course_from_database() {
 		InMemoryCourseRepository repo = new InMemoryCourseRepository();
-		GetCouse useCase = new GetCouse(repo);
+		CourseGetter useCase = new CourseGetter(repo);
 		Course retrievedCourse = useCase.getCourseById("fakeId");
 		assertEquals(null, retrievedCourse);
+	}
+	
+	@Test
+	void it_should_add_a_course() {
+		InMemoryCourseRepository repo = new InMemoryCourseRepository();
+		CourseGetter useCase = new CourseGetter(repo);
+		Course toRetrieveCourse = null;
+		try {
+			toRetrieveCourse = new Course("a87df656-c710-416d-81b6-fe341c2589e8","Course Title");
+		} catch (InvalidArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

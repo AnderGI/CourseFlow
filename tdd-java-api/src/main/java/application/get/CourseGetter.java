@@ -7,11 +7,11 @@ import domain.CourseRepository;
 // it needs to have a repository
 // I will do that by applying DIP 
 // Working against an abstraction not an implementation
-final public class GetCouse {
+final public class CourseGetter {
 
 	private CourseRepository repository;
 	
-	public GetCouse(CourseRepository repository) {
+	public CourseGetter(CourseRepository repository) {
 		this.repository = repository;
 	}
 

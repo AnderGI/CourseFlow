@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import application.get.CourseSaver;
 import domain.Course;
 import domain.CourseRepository;
 import domain.InvalidArgumentException;
@@ -22,8 +23,10 @@ public class AddCourseUnitTester {
 		}
 		// Mocking of the repository
 		CourseRepository mock = Mockito.mock(InMemoryCourseRepository.class);
+		// Use case to test
+		CourseSaver saver = new CourseSaver(mock);
 		// We will test that it does not break
-		mock.saveCourse(validCourse);
+		saver.saveCourse(validCourse);
 		
 	}
 	
