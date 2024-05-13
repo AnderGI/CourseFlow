@@ -2,7 +2,9 @@ package application.post;
 
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
 import application.get.CourseSaver;
@@ -11,6 +13,7 @@ import domain.CourseRepository;
 import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
 
+@TestMethodOrder(MethodOrderer.Random.class)
 public class AddCourseUnitTester {
 
 	@Test

@@ -3,7 +3,9 @@ package infrastructure.database.inmemory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import application.get.CourseGetter;
 import application.get.CourseSaver;
@@ -13,6 +15,7 @@ import domain.CourseTitle;
 import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
 
+@TestMethodOrder(MethodOrderer.Random.class)
 public class InMemoryRepositoyIntegrationTesting {
 	@Test
 	void it_should_add_a_course() {

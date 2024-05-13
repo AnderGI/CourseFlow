@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
 import domain.Course;
@@ -13,6 +15,10 @@ import domain.CourseRepository;
 import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
 
+// Randomize JUNIT tests
+// Each test suite will be random among different JVM
+// But the randomization will be the same within each JVM once executed
+@TestMethodOrder(MethodOrderer.Random.class)
 public class GetCourseUnitTester {
 
 	@Test
