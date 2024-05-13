@@ -47,8 +47,6 @@ public class InMemoryRepositoyIntegrationTesting {
 		// Get the course
 		CourseGetter getter = new CourseGetter(repo);
 		Course retrievedCourse = getter.getCourseById(newCourse.getIdValue());
-		assertNotNull(retrievedCourse);
-		assertEquals(Course.class, retrievedCourse.getClass());
 		assertEquals(newCourse, retrievedCourse);
 	}
 
