@@ -23,9 +23,8 @@ public class GetCourseUnitTester {
 
 	@Test
 	void it_should_get_an_existing_course_by_id() {
-		// Mock the CourseRepository
-		CourseRepository inMemoryMock = Mockito.mock(InMemoryCourseRepository.class);
-		// Dependency Inversion for the repository using mocks
+		CourseRepository inMemoryMock = this.givenAnInMemoryMock();
+		
 		CourseGetter getCourse = new CourseGetter(inMemoryMock);
 		// Specify the action and result of calling a mock method
 		Course course = null; 
@@ -60,4 +59,10 @@ public class GetCourseUnitTester {
 		Course retrieved = getCourse.getCourseById("fakeId");
 		assertEquals(null, retrieved);
 	}
+
+	
+	private CourseRepository givenAnInMemoryMock() {
+		return Mockito.mock(InMemoryCourseRepository.class);
+	}
+
 }

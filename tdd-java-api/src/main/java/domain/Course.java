@@ -11,6 +11,11 @@ final public class Course {
 		this.title = new CourseTitle(title); 
 	}
 	
+	public Course(CourseId id, CourseTitle title) {
+		this.id = id;
+		this.title = title;
+	}
+	
 	public static Course createFromPrimitives(String id, String title) throws InvalidArgumentException {
 		Course newCourse = new Course(id, title);
 		return newCourse;
