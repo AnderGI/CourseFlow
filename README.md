@@ -3,7 +3,7 @@ Applying best testing practices to an API build on Java following SOLID principl
 
 
 # TODO
-- [ x ] Paralelizacion de tests
+- [x] Paralelizacion de tests
 - [ ] Patrón ObjectMother
 - [ ] ¿Test deterministas?
 - [ ] Seguir con test unitarios
