@@ -9,7 +9,7 @@ Applying best testing practices to an API build on Java following SOLID principl
 - [ ] Seguir con test unitarios
 - [ ] Darle mayor valor semántico a los test
 - [ ] ¿TCR?
-- [ ] Implementar test de aceptación (BDD con Cucumber)
+- [ ] Implementar test de aceptación (BDD con Cucumber) [course](https://school.cucumber.io/courses/bdd-with-cucumber-java)
 - [ ] ATDD
 - [ ] Publicación de eventos de dominio (realizar el mismo flujo de tests otra vez)
 - [ ] ¿GitHooks?
