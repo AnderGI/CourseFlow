@@ -11,4 +11,4 @@ Applying TDD principles to an API build on Java following SOLID principles and P
 - [ ] Implementar test de aceptación (BDD con Cucumber)
 - [ ] ATDD
 - [ ] Publicación de eventos de dominio (realizar el mismo flujo de tests otra vez)
-- [ ] GitHooks
+- [ ] ¿GitHooks?
