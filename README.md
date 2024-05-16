@@ -4,10 +4,10 @@ Applying best testing practices to an API build on Java following SOLID principl
 
 # TODO
 - [x] Paralelizacion de tests
-- [ ] Patrón ObjectMother
+- [x] Patrón ObjectMother
 - [ ] ¿Test deterministas?
-- [ ] Seguir con test unitarios
-- [ ] Darle mayor valor semántico a los test
+- [x] Seguir con test unitarios
+- [x] Darle mayor valor semántico a los test
 - [ ] ¿TCR?
 - [ ] Implementar test de aceptación (BDD con Cucumber) [course](https://school.cucumber.io/courses/bdd-with-cucumber-java) [GitHub](https://github.com/cucumber/cucumber-jvm.git)
 - [ ] ATDD
