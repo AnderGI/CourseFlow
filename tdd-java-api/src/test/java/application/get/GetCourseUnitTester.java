@@ -1,6 +1,7 @@
 package application.get;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -10,7 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
+import application.find_course.CourseFinder;
+import application.save_course.CourseSaver;
 import domain.Course;
+import domain.CourseId;
+import domain.CourseIdMother;
+import domain.CourseMother;
+import domain.CourseNotExistError;
 import domain.CourseRepository;
 import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
@@ -20,49 +27,62 @@ import infrastructure.InMemoryCourseRepository;
 // But the randomization will be the same within each JVM once executed
 @TestMethodOrder(MethodOrderer.Random.class)
 public class GetCourseUnitTester {
-
+	// All tests should be atomic and independent 
 	@Test
-	void it_should_get_an_existing_course_by_id() {
+	void it_should_get_an_existing_course() 
+			throws InvalidArgumentException, // wont cause arguments in VO are Ok
+			CourseNotExistError // wont cause course has been saved
+	{
+		// Given
 		CourseRepository inMemoryMock = this.givenAnInMemoryMock();
+		CourseFinder courseFinder = this.givenACouseFinder(inMemoryMock);
+		CourseSaver courseSaver = this.givenACourseSaver(inMemoryMock);
+		Course toSearchCourse = this.givenACourse();
+		courseSaver.saveCourse(toSearchCourse);
+		String toSearchCourseIdValue = toSearchCourse.getIdValue();
 		
-		CourseGetter getCourse = new CourseGetter(inMemoryMock);
-		// Specify the action and result of calling a mock method
-		Course course = null; 
-		try {
-			course = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		when(inMemoryMock.getCourse("a87df656-c710-416d-81b6-fe341c2589e8")).thenReturn(Optional.of(course));
-
-		// Car to receive compared to the one the repo returns
-		Course toRetrieve = null; 
-		try {
-			toRetrieve = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Course retreieved = getCourse.getCourseById("a87df656-c710-416d-81b6-fe341c2589e8");
-		assertEquals(toRetrieve, retreieved);
+		// When method is invoked
+		when(inMemoryMock.searchCourse(CourseIdMother.fromValue(toSearchCourseIdValue)))
+		.thenReturn(Optional.of(toSearchCourse));
+	
+		// Then
+		Course retreieved = courseFinder.findCourse(CourseIdMother.fromValue(toSearchCourseIdValue));
+		assertEquals(retreieved, toSearchCourse);
 	}
 
 	@Test
-	void it_should_not_get_an_inexistent_course() {
-		// Mock the CourseRepository
-		CourseRepository inMemoryMock = Mockito.mock(InMemoryCourseRepository.class);
-		// Dependency Inversion for the repository using mocks
-		CourseGetter getCourse = new CourseGetter(inMemoryMock);
+	void it_should_not_get_an_inexistent_course() 
+			throws InvalidArgumentException // wont
+	{
+		// Given
+		CourseRepository inMemoryMock = this.givenAnInMemoryMock();
+		CourseFinder courseFinder = this.givenACouseFinder(inMemoryMock);
+		Course toSearchCourse = this.givenACourse();
+		String toSearchCourseIdValue = toSearchCourse.getIdValue();
 		
-		when(inMemoryMock.getCourse("fakeId")).thenReturn(Optional.empty());
-		Course retrieved = getCourse.getCourseById("fakeId");
-		assertEquals(null, retrieved);
+		// When method is invoked
+		when(inMemoryMock.searchCourse(null)).thenReturn(Optional.empty());
+		
+		// Then	
+		assertThrows(CourseNotExistError.class, 
+				() -> courseFinder.findCourse(CourseIdMother.fromValue(toSearchCourseIdValue)));
 	}
 
 	
 	private CourseRepository givenAnInMemoryMock() {
 		return Mockito.mock(InMemoryCourseRepository.class);
+	}
+	
+	private CourseFinder givenACouseFinder(CourseRepository repo) {
+		return new CourseFinder(repo);
+	}
+	
+	private Course givenACourse() throws InvalidArgumentException {
+		return CourseMother.create();
+	}
+	
+	private CourseSaver givenACourseSaver(CourseRepository repo) {
+		return new CourseSaver(repo);
 	}
 
 }
