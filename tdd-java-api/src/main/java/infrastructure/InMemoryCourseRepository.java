@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import domain.Course;
+import domain.CourseId;
 import domain.CourseRepository;
 import domain.InvalidArgumentException;
 
@@ -14,9 +15,9 @@ final public class InMemoryCourseRepository implements CourseRepository {
 
 	
 	@Override
-	public Optional<Course> getCourse(String id) {
+	public Optional<Course> searchCourse(CourseId id) {
 		return database.stream()
-				.filter(c -> c.getIdValue().equals(id))
+				.filter(c -> c.getIdValue().equals(id.getValue()))
 				.findFirst();
 	}
 
