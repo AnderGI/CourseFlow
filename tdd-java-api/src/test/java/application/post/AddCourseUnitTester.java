@@ -7,8 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 
-import application.get.CourseSaver;
+import application.save_course.CourseSaver;
 import domain.Course;
+import domain.CourseMother;
 import domain.CourseRepository;
 import domain.InvalidArgumentException;
 import infrastructure.InMemoryCourseRepository;
@@ -17,21 +18,22 @@ import infrastructure.InMemoryCourseRepository;
 public class AddCourseUnitTester {
 
 	@Test
-	void it_should_add_a_course() {
-		Course validCourse = null;
-		try {
-			validCourse = Course.createFromPrimitives("a87df656-c710-416d-81b6-fe341c2589e8", "Course title");
-		}catch(InvalidArgumentException exp) {
-			exp.printStackTrace();
-		}
-		// Mocking of the repository
-		CourseRepository mock = Mockito.mock(InMemoryCourseRepository.class);
-		// Use case to test
-		CourseSaver saver = new CourseSaver(mock);
-		// We will test that it does not break
-		saver.saveCourse(validCourse);
-		
+	void it_should_add_a_course() 
+			throws InvalidArgumentException // wont throw it
+	{
+		// 	Test only if saver and repo dont "break"
+		CourseRepository inMemoryMock = this.givenAnInMemoryCourseRepository();
+		CourseSaver courseSaver = this.givenACourseSaver(inMemoryMock);
+		Course toAddValidCourse = CourseMother.create();
+		courseSaver.saveCourse(toAddValidCourse);
+
+	}
+
+	private CourseRepository givenAnInMemoryCourseRepository() {
+		return Mockito.mock(InMemoryCourseRepository.class);
 	}
 	
-	// We cannot validate the saving of an invalid course because of static typing
+	private CourseSaver givenACourseSaver(CourseRepository repo) {
+		return new CourseSaver(repo);
+	}
 }
