@@ -1,6 +1,5 @@
 package bdd;
-
-
+import cucumber.api.java.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootContextLoader;
@@ -9,9 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.tdd.api.TddJavaApiApplication;
-
-import io.cucumber.java.Before;
-
 
 /**
  * Class to use spring application context while running cucumber
