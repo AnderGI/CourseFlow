@@ -3,18 +3,11 @@ Feature: Find an existing Course
 
   Scenario: Find an existing course
     Given there is a course
-      | id                                   | title                                     |
-      | bebe2469-de39-4f69-bd92-842b95b94062 | "Testing introduccion y buenas practicas" |
-    When the client makes a GET to "/courses/ibebe2469-de39-4f69-bd92-842b95b94062"
+      | id    | e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0    |
+      | title | Testing introduccion y buenas practicas |
+    When the client makes a GET to "/courses/e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0"
     Then the response status code should be 200
-    And the response content :
-      """
-      {
-        "id": {
-          "value": "bebe2469-de39-4f69-bd92-842b95b94062"
-        },
-        "title": {
-          "value": "Testing introduccion y buenas practicas"
-        }
-      }
-      """
+    Then the response content :
+    """
+    {"id":{"value":"e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0"},"title":{"value":"Testing introduccion y buenas practicas"}}
+    """
