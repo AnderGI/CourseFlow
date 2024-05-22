@@ -44,8 +44,8 @@ public class InMemoryRepositoyIntegrationTesting {
 	}
 
 	@Test
-	void it_should_not_get_an_inexisting_course_from_database() throws InvalidArgumentException {
-		// Given
+	void it_should_not_get_a_non_existing_course_from_database() throws InvalidArgumentException {
+		
 		CourseRepository courseRepo = this.givenAnInMemoryCourseRepository();
 		Course newValidCourse = CourseMother.create();
 		CourseFinder courseFinder = this.givenACourseFinder(courseRepo);

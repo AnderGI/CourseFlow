@@ -7,12 +7,14 @@ import java.net.URI;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.bdd.CucumberSpringContextConfiguration;
 import com.tdd.api.domain.Course;
@@ -25,16 +27,16 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 
-@ContextConfiguration(classes = CucumberSpringContextConfiguration.class)
-@SpringBootTest
+//@ContextConfiguration(classes = CucumberSpringContextConfiguration.class)
+//@SpringBootTest
 public class GetCourseSteps {
-	@Autowired
-	private TestRestTemplate rest;
-	private ResponseEntity<String> response;
+	private RestTemplate rest = new RestTemplate();
+	private ResponseEntity<JsonNode> response;
 	private Integer port = 3001;
 	private URI uri = null;
+	private ObjectMapper mapper = new ObjectMapper();
 
-	// Create and add the course
+	// Happy path for existing course
 	@Given("there is a course")
 	public void there_is_a_course(DataTable dataTable) throws CourseNotExistError, InvalidArgumentException {
 		Map<String, String> datatableMap = dataTable.asMap(String.class, String.class);
@@ -60,11 +62,10 @@ public class GetCourseSteps {
 
 	}
 
-
 	@When("the client makes a GET to {string}")
 	public void the_client_makes_a_GET_to(String endpoint) {
 		// Lógica para hacer la solicitud GET al endpoint
-		response = rest.getForEntity("http://localhost:" + port + endpoint, String.class);
+		response = rest.getForEntity("http://localhost:" + port + endpoint, JsonNode.class);
 	}
 
 	@Then("the endpoint {string} should be the same as the location of the new resource")
@@ -79,7 +80,6 @@ public class GetCourseSteps {
 		assertEquals(statusCode, 200);
 	}
 
-
 	@Then("the content type should be {string}")
 	public void the_content_type_should_be(String expectedContentType) {
 		// Lógica para verificar el código de estado de la respuesta
@@ -88,7 +88,19 @@ public class GetCourseSteps {
 
 	@Then("the response content :")
 	public void the_response_content(String expectedContent) {
-		assertEquals(response.getBody().equalsIgnoreCase(expectedContent), true);
+		JsonNode expectedJsonNode = null;
+		JsonNode actualJsonNode = null;
+	
+		try {
+			expectedJsonNode = mapper.readTree(expectedContent);
+			actualJsonNode = mapper.readTree(response.getBody().toString());
+		} catch (Exception exp) {
+			exp.printStackTrace();
+		}
+	
+		// Comparar ambos JSONs
+		assertEquals(expectedJsonNode, actualJsonNode);
 	}
+	
 
 }

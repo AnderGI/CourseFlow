@@ -8,7 +8,10 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "classpath:features", glue = "com.tdd.api.bdd.stepsdefs.get_course")
+@CucumberOptions(
+    features = "classpath:features",
+    glue = {"com.tdd.api.bdd.stepsdefs"}
+)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class CucumberTest {
 /*

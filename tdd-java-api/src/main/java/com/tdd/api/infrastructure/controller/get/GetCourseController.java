@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.domain.Course;
@@ -17,14 +18,16 @@ import com.tdd.api.domain.CourseRepository;
 import com.tdd.api.domain.InvalidArgumentException;
 import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
 import com.tdd.api.infrastructure.jackson.parse_json.JsonCourseParser;
+import com.tdd.api.infrastructure.jackson.parse_json.JsonErrorParser;
 
 
 
 @RestController
 final public class GetCourseController {
 	
-	private CourseRepository repo = new InMemoryCourseRepository();
-	
+	private static CourseRepository repo = new InMemoryCourseRepository();
+	private static JsonErrorParser errorParser = new JsonErrorParser();
+	private static JsonCourseParser courseParser = new JsonCourseParser();
 	public GetCourseController() {
 		
 	}
@@ -35,25 +38,19 @@ final public class GetCourseController {
 	}
 	
 	@GetMapping("/courses/{id}")
-	public ResponseEntity<ObjectNode> getCourseById(@PathVariable String id){
-		System.out.println(id);
+	public ResponseEntity<JsonNode> getCourseById(@PathVariable String id){
 		CourseFinder finder = new CourseFinder(repo);
-		System.out.println("GET");
+		Course course = null;
+		try {
+			course = finder.findCourse(new CourseId(id));
+		} catch (Exception exp) {
+			return ResponseEntity.status(404).body(errorParser.fromExceptionToJson(exp));
+		}
 		
 		try {
-			
-			Course course = finder.findCourse(new CourseId(id));
-			System.out.println();
-			JsonCourseParser parser = new JsonCourseParser();
-			return ResponseEntity.ok(parser.fromCourseToJson(course));
-		} catch (CourseNotExistError | InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			
-			return ResponseEntity.notFound().build();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(courseParser.fromCourseToJson(course));
+		}catch(Exception exp) {
+			return ResponseEntity.status(404).body(errorParser.fromExceptionToJson(exp));
 		}
 		
 	}

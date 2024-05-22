@@ -25,7 +25,7 @@ import com.tdd.api.infrastructure.jackson.parse_json.JsonErrorParser;
 
 @RestController
 final public class CoursePostController {
-	private CourseRepository repo = new InMemoryCourseRepository();
+	private static CourseRepository repo = new InMemoryCourseRepository();
 	private static ObjectMapper mapper = new ObjectMapper();
 	private static JsonErrorParser errorParser = new JsonErrorParser();
 	

@@ -13,10 +13,4 @@ Feature: Find an existing Course
     """
     {"id":{"value":"e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0"},"title":{"value":"Testing introduccion y buenas practicas"}}
     """
-      #  Scenario: Not find a non existing course
-      #   Given I user makes a GET request to "/courses/3158494d-f47f-4252-9525-cff22e959fd2"
-      #   Then The response status should be 404
-      #  Then The response content :
-      #   \"\"\"
-      #  {"error":"404 Not Found", "message":"Course with id 3158494d-f47f-4252-9525-cff22e959fd2 does not exist"}
-      # \"\"\"
+
