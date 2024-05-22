@@ -14,7 +14,7 @@ import com.tdd.api.domain.CourseMother;
 import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.CourseRepository;
 import com.tdd.api.domain.InvalidArgumentException;
-import com.tdd.api.infrastructure.InMemoryCourseRepository;
+import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
 
 // Randomize JUNIT tests
 // Each test suite will be random among different JVM

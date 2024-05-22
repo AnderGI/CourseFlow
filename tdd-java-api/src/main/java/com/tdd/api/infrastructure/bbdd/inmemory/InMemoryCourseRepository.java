@@ -1,4 +1,4 @@
-package com.tdd.api.infrastructure;
+package com.tdd.api.infrastructure.bbdd.inmemory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,9 @@ final public class InMemoryCourseRepository implements CourseRepository {
 
 
 	@Override
-	public List<Course> getAll() {
+	public Optional<List<Course>> getAll() {
 		// TODO Auto-generated method stub
-		return database;
+		return Optional.of(database);
 	}
 
 }

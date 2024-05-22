@@ -15,8 +15,8 @@ import com.tdd.api.domain.CourseId;
 import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.CourseRepository;
 import com.tdd.api.domain.InvalidArgumentException;
-import com.tdd.api.domain.parse_to_json.JsonParser;
-import com.tdd.api.infrastructure.InMemoryCourseRepository;
+import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
+import com.tdd.api.infrastructure.jackson.parse_json.JsonCourseParser;
 
 
 
@@ -30,18 +30,22 @@ final public class GetCourseController {
 	}
 	
 	@GetMapping("/courses")
-	public List<Course> getAll(){
-		return repo.getAll();
+	public ResponseEntity<List<Course>> getAll(){
+		return ResponseEntity.of(repo.getAll());
 	}
 	
 	@GetMapping("/courses/{id}")
 	public ResponseEntity<ObjectNode> getCourseById(@PathVariable String id){
+		System.out.println(id);
 		CourseFinder finder = new CourseFinder(repo);
+		System.out.println("GET");
+		
 		try {
 			
 			Course course = finder.findCourse(new CourseId(id));
-			JsonParser parser = new JsonParser();
-			return ResponseEntity.ok(parser.createJsonCourseResponse(course));
+			System.out.println();
+			JsonCourseParser parser = new JsonCourseParser();
+			return ResponseEntity.ok(parser.fromCourseToJson(course));
 		} catch (CourseNotExistError | InvalidArgumentException e) {
 			// TODO Auto-generated catch block
 			
