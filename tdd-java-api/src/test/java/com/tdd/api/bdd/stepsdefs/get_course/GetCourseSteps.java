@@ -6,17 +6,13 @@ import java.net.URI;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.tdd.api.bdd.CucumberSpringContextConfiguration;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.InvalidArgumentException;
@@ -27,8 +23,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.cucumber.datatable.DataTable;
 
-//@ContextConfiguration(classes = CucumberSpringContextConfiguration.class)
-//@SpringBootTest
 public class GetCourseSteps {
 	private RestTemplate rest = new RestTemplate();
 	private ResponseEntity<JsonNode> response;

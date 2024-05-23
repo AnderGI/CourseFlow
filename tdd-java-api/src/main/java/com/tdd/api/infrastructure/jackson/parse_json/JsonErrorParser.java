@@ -8,16 +8,20 @@ import com.tdd.api.domain.InvalidArgumentException;
 
 final public class JsonErrorParser {
 	private static ObjectMapper mapper = new ObjectMapper();
-	
+
 	public JsonNode fromExceptionToJson(Exception exp) {
 		ObjectNode errorNode = mapper.createObjectNode();
-		if(exp instanceof InvalidArgumentException || exp instanceof NullPointerException) {
+		if(exp instanceof InvalidArgumentException) {
 			errorNode.put("error", "422 Unprocessable Entity");
 			errorNode.put("message", "Invalid arguments for course creation");
 		}else if(exp instanceof CourseNotExistError){
 			errorNode.put("error", "404 Not Found");
 			errorNode.put("message", "Specified course not found");
+		}else if(exp instanceof NullPointerException){
+			errorNode.put("error", "422 Unprocessable Entity");
+			errorNode.put("message", "Invalid arguments for course creation");
 		}else {
+		
 			errorNode.put("error", "500 Internal Server Error");
 			errorNode.put("message", "Ups! Something went wrong!");
 		}
