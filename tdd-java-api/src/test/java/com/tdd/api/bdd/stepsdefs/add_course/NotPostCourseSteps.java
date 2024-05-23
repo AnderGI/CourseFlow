@@ -1,4 +1,4 @@
-package com.tdd.api.bdd.stepsdefs.not_add_course;
+package com.tdd.api.bdd.stepsdefs.add_course;
 
 import static org.junit.Assert.assertEquals;
 

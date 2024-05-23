@@ -21,9 +21,8 @@ public class NotGetCourseSteps {
 	private ObjectMapper mapper = new ObjectMapper();
 	private HttpHeaders errorHeaders = null;
 	private String responseStringBody = null;
-	// private URI uri = null;
+	private final String DOMAIN_URL = "http://localhost:" + port;
 
-	// Create and add the course
 	@Given("there is no course")
 	public void there_is_no_course() {
 
@@ -32,15 +31,17 @@ public class NotGetCourseSteps {
 	@When("a user makes a GET request to non existing course {string}")
 	public void a_user_makes_a_get_request_to_non_existing_course(String nonExistingResourceEndpoint) {
 		try{
-			rest.getForEntity("http://localhost:" + port + nonExistingResourceEndpoint, JsonNode.class);
+			rest.getForEntity( DOMAIN_URL + nonExistingResourceEndpoint, JsonNode.class);
 		}catch(HttpClientErrorException exp){
+			// Catch the exception thrown by the controller with
+			// the DSL based error
 			code = exp.getStatusCode().value();
 			errorHeaders = exp.getResponseHeaders();
 			responseStringBody = exp.getResponseBodyAsString();
 		}
 	}
 
-	@Then("the response status code for non existing course should be {int}")
+	@Then("the response status code for non existing course should be {int} Not Found")
 	public void the_response_status_code_for_non_existing_course_should_be(int statusCode) {
 		assertEquals(statusCode, code.intValue());
 	}
@@ -58,9 +59,9 @@ public class NotGetCourseSteps {
 			expectedJsonNode = mapper.readTree(expectedContent);
 			actualJsonNode = mapper.readTree(responseStringBody);
 		} catch (Exception exp) {
-			exp.printStackTrace();
 		}
-		// Comparar ambos JSONs
+
+		// Compare JsonNodes rather than String for avoiding line breaks and those possible features
 		assertEquals(expectedJsonNode, actualJsonNode);
 	}
 
