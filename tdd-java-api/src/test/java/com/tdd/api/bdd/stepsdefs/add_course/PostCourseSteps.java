@@ -20,7 +20,7 @@ public class PostCourseSteps {
 	private ObjectMapper mapper = new ObjectMapper();
 	private JsonNode receivedCourseInJson = null;
 	private ResponseEntity<JsonNode> response = null;
-
+	private final String DOMAIN_URL = "http://localhost:" + port;
 	// Happy path for existing course
 	@Given("a user sends a POST request with new course")
 	public void a_user_sends_a_post_request_with_new_course(String jsonRepresentedCourse) {
@@ -32,7 +32,7 @@ public class PostCourseSteps {
 
 	@When("course is added to database in {string}")
 	public void course_is_added_to_database(String coursePostEndpoint) {
-		response = rest.postForEntity("http://localhost:" + port + coursePostEndpoint, receivedCourseInJson, JsonNode.class);
+		response = rest.postForEntity(DOMAIN_URL + coursePostEndpoint, receivedCourseInJson, JsonNode.class);
 	}
 
 	@Then("response status code for added course is {int} created")
