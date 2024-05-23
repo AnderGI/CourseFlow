@@ -26,7 +26,7 @@ final public class GetCourseController {
 	}
 
 	@GetMapping("/courses")
-	public ResponseEntity<List<Course>> getAll() {
+	public ResponseEntity<List<Course>> getAll() { //  modificiar
 		return ResponseEntity.of(repo.getAll());
 	}
 

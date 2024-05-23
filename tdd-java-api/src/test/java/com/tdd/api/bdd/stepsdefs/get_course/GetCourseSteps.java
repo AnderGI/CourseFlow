@@ -29,37 +29,35 @@ public class GetCourseSteps {
 	private Integer port = 3001;
 	private URI uri = null;
 	private ObjectMapper mapper = new ObjectMapper();
+	private final String DOMAIN_URL = "http://localhost:" + port;
 
-	// Happy path for existing course
+	
 	@Given("there is a course")
 	public void there_is_a_course(DataTable dataTable) throws CourseNotExistError, InvalidArgumentException {
 		Map<String, String> datatableMap = dataTable.asMap(String.class, String.class);
 		String id = datatableMap.get("id");
 		String title = datatableMap.get("title");
-		// OCP Violation
 		Course course = null;
 		try {
 			course = Course.createFromPrimitives(id, title);
 
-		} catch (InvalidArgumentException exp) {
-			System.out.println("ERROR");
-		}
+		} catch (InvalidArgumentException exp) {} 
 
 		JsonCourseParser parser = new JsonCourseParser();
 		ObjectNode formattedCourse = null;
 		try {
 			formattedCourse = parser.fromCourseToJson(course);
-			// añadir el curso ya existente
-			uri = rest.postForLocation("http://localhost:" + port + "/courses", formattedCourse);
-		} catch (JsonProcessingException exp) {
-		}
+			// Add the course that we are suposed to get 
+			// Tests are atomic processes, so getting something that exists means adding it first
+			uri = rest.postForLocation(DOMAIN_URL + "/courses", formattedCourse);
+		} catch (JsonProcessingException exp) {}
 
 	}
 
 	@When("the client makes a GET to {string}")
 	public void the_client_makes_a_GET_to(String endpoint) {
 		// Lógica para hacer la solicitud GET al endpoint
-		response = rest.getForEntity("http://localhost:" + port + endpoint, JsonNode.class);
+		response = rest.getForEntity(DOMAIN_URL + endpoint, JsonNode.class);
 	}
 
 	@Then("the endpoint {string} should be the same as the location of the new resource")
@@ -68,7 +66,7 @@ public class GetCourseSteps {
 		assertEquals(uri.toString(), endpoint);
 	}
 
-	@Then("the response status code should be {int}")
+	@Then("the response status code should be {int} OK")
 	public void the_response_status_code_should_be(int statusCode) {
 		// Lógica para verificar el código de estado de la respuesta
 		assertEquals(statusCode, 200);
