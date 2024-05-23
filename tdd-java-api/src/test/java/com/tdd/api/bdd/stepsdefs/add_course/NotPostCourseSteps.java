@@ -23,6 +23,7 @@ public class NotPostCourseSteps {
 	private HttpHeaders headers = null;
 	private Integer statusCode = null;
 	private String postErrorResponseBody = null;
+	private final String DOMAIN_URL = "http://localhost:" + port;
 
 	// Happy path for existing course
 	@Given("a user sends a POST request with new invalid course")
@@ -40,14 +41,12 @@ public class NotPostCourseSteps {
 		Course invalidCourse = null;
 		try {
 			invalidCourse = courseParser.fromJsonToCourse(receivedInvalidCourseInJson);
-			rest.postForLocation("http://localhost:" + port + "/courses", invalidCourse);
+			rest.postForLocation(DOMAIN_URL + "/courses", invalidCourse);
 		} catch (HttpClientErrorException exp) {
 			headers = exp.getResponseHeaders();
 			postErrorResponseBody = exp.getResponseBodyAsString();
 			statusCode = exp.getStatusCode().value();
-		} catch (InvalidArgumentException exp) {
-		} // no lo lanza ya que todo lo que le llega lo hace como string y se recoge como
-			// tal
+		} catch (InvalidArgumentException exp) {}  
 
 	}
 
