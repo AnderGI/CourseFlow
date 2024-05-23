@@ -8,30 +8,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 final public class Course {
 	private CourseId id;
 	private CourseTitle title;
-	
+
 	@JsonCreator
-	public Course(@JsonProperty("id")CourseId id, @JsonProperty("title")CourseTitle title) throws InvalidArgumentException {
-		this.id = id; 
-		this.title = title; 
+	public Course(@JsonProperty("id") CourseId id, @JsonProperty("title") CourseTitle title)
+			throws InvalidArgumentException {
+		this.id = id;
+		this.title = title;
 	}
-	
+
 	public static Course createFromPrimitives(String id, String title) throws InvalidArgumentException {
 		Course newCourse = new Course(new CourseId(id), new CourseTitle(title));
 		return newCourse;
 	}
-	
+
 	public String getIdValue() {
 		return id.getValue();
 	}
-	
+
 	public String getTitleValue() {
 		return title.getValue();
 	}
-	
+
 	// Since Value Objects are unique and differ one another from its value
 	// whenever a user updates a title it will update the whole VO
 	// by creating a new one
-	public void updateCourseTitle(String title) {
+	public void updateCourseTitle(String title) throws InvalidArgumentException {
 		this.title = new CourseTitle(title);
 	}
 
@@ -52,13 +53,9 @@ final public class Course {
 		return Objects.equals(id, other.id);
 	}
 
-
 	@Override
 	public String toString() {
 		return "Course [id=" + id + ", title=" + title + "]";
 	}
-	
-	
-	
-	
+
 }

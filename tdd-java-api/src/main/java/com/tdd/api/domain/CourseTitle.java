@@ -7,22 +7,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 final public class CourseTitle {
 	private String value;
-	
+
 	@JsonCreator
-	public CourseTitle(@JsonProperty("value")String value) {
+	public CourseTitle(@JsonProperty("value") String value) throws InvalidArgumentException {
 		// We should ensure title is valid
+		ensureTitleIsValid(value);
 		this.value = value;
 	}
-	
-	private void ensureTitleIsValid(String title) throws InvalidArgumentException{
-		if(title.isBlank()) {
+
+	private void ensureTitleIsValid(String title) throws InvalidArgumentException {
+		if (title.isBlank()) {
 			throw new InvalidArgumentException("Course title does not have valid format: " + title);
 		}
 	}
+
 	public String getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(value);
@@ -44,5 +46,5 @@ final public class CourseTitle {
 	public String toString() {
 		return this.value;
 	}
-	
+
 }
