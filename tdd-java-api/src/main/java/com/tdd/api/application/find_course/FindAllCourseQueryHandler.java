@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseRepository;
-import com.tdd.api.domain.QueryHandler;
+import com.tdd.api.domain.query.FindAllCoursesQuery;
+import com.tdd.api.domain.query.QueryHandler;
 
 public class FindAllCourseQueryHandler implements QueryHandler<FindAllCoursesQuery, List<Course>> {
 
@@ -19,7 +20,7 @@ public class FindAllCourseQueryHandler implements QueryHandler<FindAllCoursesQue
 		// TODO Auto-generated method stub
 		CourseFinder finder = new CourseFinder(repo);
 		
-		return null;
+		return finder.findAll();
 	}
 
 }

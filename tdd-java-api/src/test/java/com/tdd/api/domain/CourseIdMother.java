@@ -2,6 +2,8 @@ package com.tdd.api.domain;
 
 import java.util.UUID;
 
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
+
 final public class CourseIdMother {
 	public static CourseId random() throws InvalidArgumentException {
 		return new CourseId(UUID.randomUUID().toString());

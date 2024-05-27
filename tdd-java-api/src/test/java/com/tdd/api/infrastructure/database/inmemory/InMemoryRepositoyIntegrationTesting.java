@@ -15,9 +15,9 @@ import com.tdd.api.application.save_course.CourseSaver;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseIdMother;
 import com.tdd.api.domain.CourseMother;
-import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.CourseRepository;
-import com.tdd.api.domain.InvalidArgumentException;
+import com.tdd.api.domain.exceptions.CourseNotExistError;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
 
 @TestMethodOrder(MethodOrderer.Random.class)

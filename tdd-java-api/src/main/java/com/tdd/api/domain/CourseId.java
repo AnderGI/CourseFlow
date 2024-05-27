@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
 final public class CourseId {
 	private final Pattern UUID_REGEX = Pattern

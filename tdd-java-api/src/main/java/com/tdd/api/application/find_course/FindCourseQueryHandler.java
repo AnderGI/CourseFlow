@@ -4,11 +4,12 @@ import java.util.Optional;
 
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseId;
-import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.CourseRepository;
-import com.tdd.api.domain.InvalidArgumentException;
-import com.tdd.api.domain.Query;
-import com.tdd.api.domain.QueryHandler;
+import com.tdd.api.domain.exceptions.CourseNotExistError;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
+import com.tdd.api.domain.query.FindCourseQuery;
+import com.tdd.api.domain.query.Query;
+import com.tdd.api.domain.query.QueryHandler;
 
 public class FindCourseQueryHandler implements QueryHandler<FindCourseQuery, Course> {
 

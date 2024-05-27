@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdd.api.domain.CourseNotExistError;
-import com.tdd.api.domain.InvalidArgumentException;
+import com.tdd.api.domain.exceptions.CourseNotExistError;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.domain.parse_exceptions.CourseNotExistErrorParser;
 import com.tdd.api.domain.parse_exceptions.ExceptionToJsonNodeParser;
 import com.tdd.api.domain.parse_exceptions.InternalServerErrorParser;

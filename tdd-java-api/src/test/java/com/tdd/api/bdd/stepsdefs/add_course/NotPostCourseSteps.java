@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdd.api.domain.Course;
-import com.tdd.api.domain.InvalidArgumentException;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.infrastructure.jackson.parse_json.JsonCourseParser;
 
 import cucumber.api.java.en.Given;

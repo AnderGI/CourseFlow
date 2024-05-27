@@ -1,6 +1,4 @@
-package com.tdd.api.application.find_course;
-
-import com.tdd.api.domain.Query;
+package com.tdd.api.domain.query;
 
 final public class FindCourseQuery implements Query {
 	private String uuid;

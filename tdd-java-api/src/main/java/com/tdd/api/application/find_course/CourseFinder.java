@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseId;
-import com.tdd.api.domain.CourseNotExistError;
 import com.tdd.api.domain.CourseRepository;
+import com.tdd.api.domain.exceptions.CourseNotExistError;
 
 // As a use case
 // it needs to have a repository

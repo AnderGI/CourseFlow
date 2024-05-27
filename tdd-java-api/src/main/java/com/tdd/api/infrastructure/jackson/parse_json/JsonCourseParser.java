@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.domain.Course;
-import com.tdd.api.domain.InvalidArgumentException;
+import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
 final public class JsonCourseParser {
 	private ObjectMapper mapper = new ObjectMapper(); 

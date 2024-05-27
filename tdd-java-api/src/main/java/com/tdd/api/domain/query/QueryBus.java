@@ -1,5 +1,4 @@
-package com.tdd.api.domain;
-
+package com.tdd.api.domain.query;
 
 public interface QueryBus {
 	<R> R ask(Query query) throws Exception; 
