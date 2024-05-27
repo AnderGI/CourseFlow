@@ -44,7 +44,7 @@ public class GetCourseSteps {
 		} catch (InvalidArgumentException exp) {} 
 
 		JsonCourseParser parser = new JsonCourseParser();
-		ObjectNode formattedCourse = null;
+		JsonNode formattedCourse = null;
 		try {
 			formattedCourse = parser.fromCourseToJson(course);
 			// Add the course that we are suposed to get 

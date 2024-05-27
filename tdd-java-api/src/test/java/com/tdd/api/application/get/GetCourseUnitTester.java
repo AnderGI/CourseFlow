@@ -1,7 +1,10 @@
 package com.tdd.api.application.get;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -53,7 +56,29 @@ public class GetCourseUnitTester {
 		assertThrows(CourseNotExistError.class, 
 				() -> courseFinder.findCourse(CourseIdMother.fromValue(toSearchCourseIdValue)));
 	}
+	
+	@Test
+	void it_should_get_all_courses_with_courses() throws InvalidArgumentException {
+		// Given
+		CourseRepository inMemoryRepo = this.givenAnInMemoryRepository();
+		inMemoryRepo.saveCourse(CourseMother.create());
+		inMemoryRepo.saveCourse(CourseMother.create());
+		inMemoryRepo.saveCourse(CourseMother.create());
+		CourseFinder finder = new CourseFinder(inMemoryRepo);
+		// When
+		List<Course> findedCourses = finder.findAll();
+		
+		// Then
+		List<Course> inRepoCourses = inMemoryRepo.getAll().orElse(null);
+		assertArrayEquals(inRepoCourses.toArray(), findedCourses.toArray());
+	}
 
+	@Test
+	void it_should_get_all_course_with_empty_repo() {
+		CourseRepository inMemoryRepo = this.givenAnInMemoryRepository();
+		CourseFinder finder = new CourseFinder(inMemoryRepo);
+		assertArrayEquals(inMemoryRepo.getAll().orElse(null).toArray(), finder.findAll().toArray());
+	}
 
 	private CourseRepository givenAnInMemoryRepository() {
 		return new InMemoryCourseRepository();

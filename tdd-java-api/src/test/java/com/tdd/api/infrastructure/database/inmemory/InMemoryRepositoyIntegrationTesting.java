@@ -1,7 +1,10 @@
 package com.tdd.api.infrastructure.database.inmemory;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -55,6 +58,22 @@ public class InMemoryRepositoyIntegrationTesting {
 				() -> courseFinder.findCourse(CourseIdMother.fromValue(courseIdValue)));
 	}
 
+	@Test
+	void it_should_get_all_existing_courses() throws InvalidArgumentException {
+		// Given
+		CourseRepository repo = this.givenAnInMemoryCourseRepository();
+		repo.saveCourse(CourseMother.create());
+		repo.saveCourse(CourseMother.create());
+		repo.saveCourse(CourseMother.create());
+		repo.saveCourse(CourseMother.create());
+		CourseFinder finder = new CourseFinder(repo);
+		// When 
+		List<Course> coursesToFind = finder.findAll();
+		// Then
+		assertArrayEquals(repo.getAll().orElse(null).toArray(), coursesToFind.toArray());
+		
+	}
+	
 	private CourseRepository givenAnInMemoryCourseRepository() {
 		return new InMemoryCourseRepository();
 	}

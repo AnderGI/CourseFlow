@@ -1,5 +1,8 @@
 package com.tdd.api.application.find_course;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseId;
 import com.tdd.api.domain.CourseNotExistError;
@@ -23,6 +26,10 @@ final public class CourseFinder {
 			throw new CourseNotExistError(id);
 		}
 		return course;
+	}
+	
+	public List<Course> findAll(){
+		return repository.getAll().orElse(null);
 	}
 
 	

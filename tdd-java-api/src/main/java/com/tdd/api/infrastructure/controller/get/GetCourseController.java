@@ -6,7 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.find_course.FindAllCoursesQuery;
 import com.tdd.api.application.find_course.FindCourseQuery;
@@ -29,6 +34,7 @@ final public class GetCourseController {
 	private final CourseRepository repo;
 	private final JsonCourseParser courseParser;
 	private final QueryBus queryBus;
+	private final ObjectMapper mapper = new ObjectMapper();
 	
     public GetCourseController() {
         this.repo = new InMemoryCourseRepository();
@@ -37,9 +43,21 @@ final public class GetCourseController {
     }
 
 	@GetMapping("/courses")
-	public ResponseEntity<List<Course>> getAll() { //  modificiar
-		FindAllCoursesQuery query = new FindAllCoursesQuery();
-		return ResponseEntity.of(repo.getAll());
+	public ResponseEntity<JsonNode> getAll() { 
+		ObjectNode rootNode = mapper.createObjectNode();
+		ArrayNode coursesArray = mapper.createArrayNode();
+		List<Course> courses = repo.getAll().orElse(null);
+		for(Course course : courses) {
+			try {
+				JsonNode jsonNodeCourse = courseParser.fromCourseToJson(course);
+				coursesArray.add(jsonNodeCourse);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		rootNode.set("courses", coursesArray);
+		return ResponseEntity.ok(rootNode);
 	}
 
 	

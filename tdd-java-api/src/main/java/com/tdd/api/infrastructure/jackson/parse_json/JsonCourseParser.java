@@ -9,8 +9,8 @@ import com.tdd.api.domain.InvalidArgumentException;
 
 final public class JsonCourseParser {
 	private ObjectMapper mapper = new ObjectMapper(); 
-	// JSON ¿? ObjectNode¿?
-	public ObjectNode fromCourseToJson(Course course) throws JsonProcessingException {
+
+	public JsonNode fromCourseToJson(Course course) throws JsonProcessingException {
 		ObjectNode mainNode = mapper.createObjectNode();
 		// de momento a mano
 		// nodo de id value 
