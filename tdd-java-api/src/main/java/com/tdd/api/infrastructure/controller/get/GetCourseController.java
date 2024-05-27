@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.tdd.api.application.find_course.CourseFinder;
+import com.tdd.api.application.find_course.FindAllCoursesQuery;
 import com.tdd.api.application.find_course.FindCourseQuery;
 import com.tdd.api.application.find_course.FindCourseQueryHandler;
 import com.tdd.api.domain.Course;
@@ -37,6 +38,7 @@ final public class GetCourseController {
 
 	@GetMapping("/courses")
 	public ResponseEntity<List<Course>> getAll() { //  modificiar
+		FindAllCoursesQuery query = new FindAllCoursesQuery();
 		return ResponseEntity.of(repo.getAll());
 	}
 
