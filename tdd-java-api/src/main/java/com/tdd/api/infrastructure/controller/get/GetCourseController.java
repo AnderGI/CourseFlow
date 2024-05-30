@@ -48,17 +48,9 @@ final public class GetCourseController {
 		FindAllCoursesQuery query = new FindAllCoursesQuery();
 		FindAllCourseQueryHandler queryHandler = new FindAllCourseQueryHandler(repo);
 		queryBus.registerHandler(FindAllCoursesQuery.class, queryHandler);
-		List<Course> courses = null;
 		try {
-			courses = queryBus.ask(query);
-		} catch (Exception exp) { // me parece que no realiza ningún throws
-			// TODO Auto-generated catch block
-			return ResponseEntity.status(404).body(ExceptionToJsonNodeFactory.parse(exp));
-		}
-
-		try {
-			return ResponseEntity.ok(this.parseCourseListToJson(courses));
-		} catch (JsonProcessingException exp) {
+			return ResponseEntity.ok(queryBus.ask(query));
+		} catch (Exception exp) {
 			// TODO Auto-generated catch block
 			return ResponseEntity.status(404).body(ExceptionToJsonNodeFactory.parse(exp));
 		}
@@ -69,14 +61,6 @@ final public class GetCourseController {
 		FindCourseQuery query = new FindCourseQuery(id);
 		FindCourseQueryHandler findCourseHandler = new FindCourseQueryHandler(repo);
 		queryBus.registerHandler(FindCourseQuery.class, findCourseHandler);
-		//Course course = null;
-		/*try {
-			course = queryBus.ask(query);
-		} catch (Exception exp) { // InvalidArgumentException, CourseNotExistError
-			// TODO Auto-generated catch block
-			return ResponseEntity.status(404).body(ExceptionToJsonNodeFactory.parse(exp));
-		}*/
-
 		try {
 			return ResponseEntity.ok(queryBus.ask(query));
 		} catch (Exception exp) {

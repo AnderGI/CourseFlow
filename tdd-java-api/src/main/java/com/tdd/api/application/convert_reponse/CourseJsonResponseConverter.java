@@ -1,10 +1,12 @@
 package com.tdd.api.application.convert_reponse;
 
 import java.lang.reflect.Field;
+import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.response.ResponseConverter;
@@ -23,8 +25,14 @@ final public class CourseJsonResponseConverter implements ResponseConverter {
 
 	@Override
 	public <R> R convertAll(List<Course> courses) {
-		ObjectNode mainCoursesListNode = mapper.createObjectNode();
-		return (R) ((JsonNode) mainCoursesListNode);
+		ObjectNode rootNode = mapper.createObjectNode();
+		ArrayNode arrayNode = mapper.createArrayNode();
+		for(Course course : courses) {
+			ObjectNode courseNode = mapper.createObjectNode();
+			arrayNode.add(this.convertEntityToJsonNode(course, courseNode));
+		}
+		rootNode.set("courses", arrayNode);
+		return (R) ((JsonNode) rootNode);
 	}
 	
 	private JsonNode convertEntityToJsonNode(Object entity, ObjectNode rootNode) {
