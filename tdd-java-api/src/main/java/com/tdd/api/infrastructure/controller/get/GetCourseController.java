@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.application.bus.CourseQueryBusSync;
+import com.tdd.api.application.convert_reponse.CourseJsonResponseConverter;
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.find_course.FindAllCourseQueryHandler;
 import com.tdd.api.application.find_course.FindCourseQueryHandler;
@@ -46,7 +47,9 @@ final public class GetCourseController {
 	@GetMapping("/courses")
 	public ResponseEntity<JsonNode> getAll() {
 		FindAllCoursesQuery query = new FindAllCoursesQuery();
-		FindAllCourseQueryHandler queryHandler = new FindAllCourseQueryHandler(repo);
+		FindAllCourseQueryHandler queryHandler = new FindAllCourseQueryHandler(
+				repo, new CourseFinder(repo), new CourseJsonResponseConverter());
+		
 		queryBus.registerHandler(FindAllCoursesQuery.class, queryHandler);
 		try {
 			return ResponseEntity.ok(queryBus.ask(query));
@@ -59,7 +62,8 @@ final public class GetCourseController {
 	@GetMapping("/courses/{id}")
 	public ResponseEntity<JsonNode> getCourseById(@PathVariable String id) {
 		FindCourseQuery query = new FindCourseQuery(id);
-		FindCourseQueryHandler findCourseHandler = new FindCourseQueryHandler(repo);
+		FindCourseQueryHandler findCourseHandler = new FindCourseQueryHandler(
+				repo, new CourseJsonResponseConverter(), new CourseFinder(repo));
 		queryBus.registerHandler(FindCourseQuery.class, findCourseHandler);
 		try {
 			return ResponseEntity.ok(queryBus.ask(query));
@@ -68,14 +72,4 @@ final public class GetCourseController {
 		}
 	}
 
-	private JsonNode parseCourseListToJson(List<Course> courses) throws JsonProcessingException {
-		ObjectNode rootNode = mapper.createObjectNode();
-		ArrayNode coursesArray = mapper.createArrayNode();
-		for (Course course : courses) {
-			JsonNode jsonNodeCourse = courseParser.fromCourseToJson(course);
-			coursesArray.add(jsonNodeCourse);
-		}
-		rootNode.set("courses", coursesArray);
-		return rootNode;
-	}
 }

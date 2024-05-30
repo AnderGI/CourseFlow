@@ -12,25 +12,26 @@ import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.domain.query.FindCourseQuery;
 import com.tdd.api.domain.query.Query;
 import com.tdd.api.domain.query.QueryHandler;
+import com.tdd.api.domain.response.ResponseConverter;
 
 // json Node should be some kind of videoresponse
 public class FindCourseQueryHandler implements QueryHandler<FindCourseQuery, JsonNode> {
 
 	private CourseRepository repo = null;
+	private ResponseConverter converter = null;
+	private CourseFinder finder = null;
 	
-	public FindCourseQueryHandler(CourseRepository repo) {
+	public FindCourseQueryHandler(CourseRepository repo, ResponseConverter converter, CourseFinder finder) {
 		this.repo = repo;
+		this.converter = converter;
+		this.finder = finder;
 	}
 	
 	@Override
 	public JsonNode handle(FindCourseQuery query) throws InvalidArgumentException, CourseNotExistError {
 		// TODO Auto-generated method stub
 		CourseId courseId = new CourseId(query.getCourseQueryId());
-		CourseFinder finder = new CourseFinder(repo);
-		// should be injected -> DIP
-		CourseJsonResponseConverter converter = new CourseJsonResponseConverter(); 
-		Course foundCourse = finder.findCourse(courseId);
-		return converter.convertSingle(foundCourse);
+		return converter.convertSingle(finder.findCourse(courseId));
 	}
 
 	

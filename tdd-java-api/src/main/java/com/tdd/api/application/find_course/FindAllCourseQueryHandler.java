@@ -8,24 +8,23 @@ import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseRepository;
 import com.tdd.api.domain.query.FindAllCoursesQuery;
 import com.tdd.api.domain.query.QueryHandler;
+import com.tdd.api.domain.response.ResponseConverter;
 
 public class FindAllCourseQueryHandler implements QueryHandler<FindAllCoursesQuery, JsonNode> {
 
 	private CourseRepository repo = null;
+	private ResponseConverter converter = null;
+	private CourseFinder finder = null;
 	
-	public FindAllCourseQueryHandler(CourseRepository repo) {
+	public FindAllCourseQueryHandler(CourseRepository repo, CourseFinder finder, ResponseConverter converter) {
 		this.repo = repo;
+		this.converter = converter;
+		this.finder = finder;
 	}
 	
 	@Override
 	public JsonNode handle(FindAllCoursesQuery query) throws Exception {
-		// TODO Auto-generated method stub
-		CourseFinder finder = new CourseFinder(repo);
-		
-		List<Course> courses =  finder.findAll();
-		// should apply dip
-		CourseJsonResponseConverter converter = new CourseJsonResponseConverter(); 
-		return converter.convertAll(courses);
+		return converter.convertAll(finder.findAll());
 	}
 
 }
