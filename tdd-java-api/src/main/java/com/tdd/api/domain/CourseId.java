@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
 final public class CourseId {
-	private final Pattern UUID_REGEX = Pattern
-			.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$");
 	private String value;
 
 	@JsonCreator
@@ -20,6 +18,8 @@ final public class CourseId {
 	}
 
 	private void ensureIdIsValid(String id) throws InvalidArgumentException {
+		Pattern UUID_REGEX = Pattern
+				.compile("^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$");
 		if (!UUID_REGEX.matcher(id).matches()) {
 			throw new InvalidArgumentException("Course id does not have valid format: " + id);
 		}

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.tdd.api.application.bus.CourseQueryBus;
+import com.tdd.api.application.bus.CourseQueryBusSync;
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.find_course.FindAllCourseQueryHandler;
 import com.tdd.api.application.find_course.FindCourseQueryHandler;
@@ -29,7 +29,7 @@ import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
 import com.tdd.api.infrastructure.jackson.parse_json.ExceptionToJsonNodeFactory;
 import com.tdd.api.infrastructure.jackson.parse_json.JsonCourseParser;
 
-@RestController
+@RestController 
 final public class GetCourseController {
 
 	private final CourseRepository repo;
@@ -40,7 +40,7 @@ final public class GetCourseController {
 	public GetCourseController() {
 		this.repo = new InMemoryCourseRepository();
 		this.courseParser = new JsonCourseParser();
-		this.queryBus = new CourseQueryBus();
+		this.queryBus = new CourseQueryBusSync();
 	}
 
 	@GetMapping("/courses")
@@ -69,16 +69,16 @@ final public class GetCourseController {
 		FindCourseQuery query = new FindCourseQuery(id);
 		FindCourseQueryHandler findCourseHandler = new FindCourseQueryHandler(repo);
 		queryBus.registerHandler(FindCourseQuery.class, findCourseHandler);
-		Course course = null;
-		try {
+		//Course course = null;
+		/*try {
 			course = queryBus.ask(query);
 		} catch (Exception exp) { // InvalidArgumentException, CourseNotExistError
 			// TODO Auto-generated catch block
 			return ResponseEntity.status(404).body(ExceptionToJsonNodeFactory.parse(exp));
-		}
+		}*/
 
 		try {
-			return ResponseEntity.ok(courseParser.fromCourseToJson(course));
+			return ResponseEntity.ok(queryBus.ask(query));
 		} catch (Exception exp) {
 			return ResponseEntity.status(404).body(ExceptionToJsonNodeFactory.parse(exp));
 		}
