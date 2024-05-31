@@ -2,7 +2,7 @@ package com.tdd.api.bdd.stepsdefs.get_course;
 
 import static org.junit.Assert.assertEquals;
 
-import org.springframework.http.HttpHeaders;	
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,15 +30,17 @@ public class NotGetCourseSteps {
 
 	@When("a user makes a GET request to non existing course {string}")
 	public void a_user_makes_a_get_request_to_non_existing_course(String nonExistingResourceEndpoint) {
-		try{
-			rest.getForEntity( DOMAIN_URL + nonExistingResourceEndpoint, JsonNode.class);
-		}catch(HttpClientErrorException exp){
+
+		try {
+			rest.getForEntity(DOMAIN_URL + nonExistingResourceEndpoint, JsonNode.class);
+		} catch (HttpClientErrorException exp) {
 			// Catch the exception thrown by the controller with
 			// the DSL based error
 			code = exp.getStatusCode().value();
 			errorHeaders = exp.getResponseHeaders();
 			responseStringBody = exp.getResponseBodyAsString();
 		}
+
 	}
 
 	@Then("the response status code for non existing course should be {int} Not Found")
@@ -53,6 +55,7 @@ public class NotGetCourseSteps {
 
 	@Then("the response content for non existing course :")
 	public void the_response_content_for_non_existing_course(String expectedContent) {
+
 		JsonNode expectedJsonNode = null;
 		JsonNode actualJsonNode = null;
 		try {
@@ -61,7 +64,8 @@ public class NotGetCourseSteps {
 		} catch (Exception exp) {
 		}
 
-		// Compare JsonNodes rather than String for avoiding line breaks and those possible features
+		// Compare JsonNodes rather than String for avoiding line breaks and those
+		// possible features
 		assertEquals(expectedJsonNode, actualJsonNode);
 	}
 

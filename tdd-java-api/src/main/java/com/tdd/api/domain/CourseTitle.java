@@ -20,6 +20,11 @@ final public class CourseTitle {
 		if (title.isBlank()) {
 			throw new InvalidArgumentException("Course title does not have valid format: " + title);
 		}
+		try {
+			Integer.parseInt(title);
+			throw new InvalidArgumentException("Course title does not have valid format: " + title);
+		}catch(NumberFormatException exp) {
+		}
 	}
 
 	public String getValue() {

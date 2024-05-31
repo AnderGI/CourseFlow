@@ -47,6 +47,7 @@ final public class GetCourseController {
 	@GetMapping("/courses")
 	public ResponseEntity<JsonNode> getAll() {
 		FindAllCoursesQuery query = new FindAllCoursesQuery();
+		
 		FindAllCourseQueryHandler queryHandler = new FindAllCourseQueryHandler(
 				repo, new CourseFinder(repo), new CourseJsonResponseConverter());
 		

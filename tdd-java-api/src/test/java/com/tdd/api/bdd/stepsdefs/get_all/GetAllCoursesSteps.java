@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,16 +43,20 @@ public class GetAllCoursesSteps {
 	@Given("there are some random courses")
 	// asegurarme de vacira primero repositorio
 	public void there_are_some_random_courses(DataTable datatable) throws InvalidArgumentException {
+
 		List<Course> courses = this.transformDataTableIntoCourses(datatable);
-		JsonCourseParser parser = new JsonCourseParser();
 		for (Course course : courses) {
-			JsonNode formattedCourse = null;
-			try {
-				formattedCourse = parser.fromCourseToJson(course);
-				uri = rest.postForLocation(DOMAIN_URL + "/courses", formattedCourse);
-			} catch (JsonProcessingException exp) {
-			}
+			MultiValueMap<String, String> courseFormData = new LinkedMultiValueMap<>();
+			courseFormData.set("id", course.getIdValue());
+			courseFormData.set("title", course.getTitleValue());
+			// For posting via form url encoded data
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(
+					courseFormData, headers);
+			rest.postForEntity(DOMAIN_URL + "/courses", request, JsonNode.class);
 		}
+
 	}
 
 	@When("the client makes a GET to get all {string}")
@@ -67,15 +76,18 @@ public class GetAllCoursesSteps {
 
 	@Then("the response content once all retreived :")
 	public void the_response_content_all_courses(String expectedContent) {
+
 		JsonNode expected = null;
 		try {
 			expected = mapper.readTree(expectedContent);
-		}catch(Exception exp) {
+		} catch (Exception exp) {
 		}
 		assertEquals(expected, response.getBody());
+
 	}
 
 	private List<Course> transformDataTableIntoCourses(DataTable datatable) throws InvalidArgumentException {
+
 		List<Course> courses = new ArrayList<>();
 		List<Map<String, String>> coursesMap = datatable.asMaps();
 
@@ -86,6 +98,7 @@ public class GetAllCoursesSteps {
 			courses.add(course);
 		}
 		return courses;
+
 	}
 
 }

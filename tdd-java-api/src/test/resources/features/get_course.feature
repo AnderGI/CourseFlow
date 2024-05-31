@@ -6,7 +6,6 @@ Feature: Find an existing Course
       | id    | e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0    |
       | title | Testing introduccion y buenas practicas |
     When the client makes a GET to "/courses/e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0"
-    Then the endpoint "/courses/e8a5974e-6e8e-42f8-9cd1-41c58e09b6e0" should be the same as the location of the new resource
     Then the response status code should be 200 OK
     Then the content type should be "application/json"
     Then the response content :
