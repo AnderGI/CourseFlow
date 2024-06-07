@@ -36,7 +36,7 @@ public class GetCourseSteps {
 	private final String DOMAIN_URL = "http://localhost:" + port;
 	private ResponseEntity<JsonNode> postResponse = null;
 	private ResponseEntity<JsonNode> getResponse = null;
-	
+
 	@Given("there is a course")
 	public void there_is_a_course(DataTable courseDatatable) throws CourseNotExistError, InvalidArgumentException {
 		Map<String, String> map = courseDatatable.asMap(String.class, String.class);
@@ -61,7 +61,6 @@ public class GetCourseSteps {
 		// Lógica para hacer la solicitud GET al endpoint
 		getResponse = rest.getForEntity(DOMAIN_URL + endpoint, JsonNode.class);
 	}
-
 
 	@Then("the response status code should be {int} OK")
 	public void the_response_status_code_should_be(int statusCode) {
