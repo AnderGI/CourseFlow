@@ -1,8 +1,11 @@
 package com.tdd.api.application.save_course;
 
+import org.springframework.stereotype.Service;
+
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseRepository;
 
+@Service
 final public class CourseSaver {
 	// Remaining event publisher for RabbitMQ
 	private CourseRepository repo;
