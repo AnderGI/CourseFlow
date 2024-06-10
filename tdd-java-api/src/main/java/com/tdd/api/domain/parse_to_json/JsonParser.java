@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.domain.Course;
 
-final public class JsonParser {
+public final class JsonParser {
 	private ObjectMapper mapper = new ObjectMapper(); 
 	public String createJsonCourseResponse(Course course) throws JsonProcessingException {
 		ObjectNode mainNode = mapper.createObjectNode();

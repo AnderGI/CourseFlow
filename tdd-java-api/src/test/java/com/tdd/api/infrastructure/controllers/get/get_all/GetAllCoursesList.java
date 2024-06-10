@@ -25,7 +25,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdd.api.application.convert_reponse.CourseJsonResponseConverter;
+import com.tdd.api.application.convert.entity_to_json.CourseJsonResponseConverter;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseMother;
 import com.tdd.api.domain.CourseRepository;

@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.Mockito;
 
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.save_course.CourseSaver;
@@ -16,6 +17,7 @@ import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseIdMother;
 import com.tdd.api.domain.CourseMother;
 import com.tdd.api.domain.CourseRepository;
+import com.tdd.api.domain.events.DomainEventPublisher;
 import com.tdd.api.domain.exceptions.CourseNotExistError;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
@@ -26,7 +28,7 @@ public class InMemoryRepositoyIntegrationTesting {
 	// wont throw any exception
 	void it_should_add_a_course() throws InvalidArgumentException {
 		CourseRepository courseRepo = this.givenAnInMemoryCourseRepository();
-		CourseSaver courseSaver = this.givenACourseSaver(courseRepo);
+		CourseSaver courseSaver = this.givenACourseSaver(courseRepo, this.givenAPublisherMock());
 		Course newValidCourse = CourseMother.create();
 		courseSaver.saveCourse(newValidCourse);
 	}
@@ -35,7 +37,7 @@ public class InMemoryRepositoyIntegrationTesting {
 	void it_should_get_an_existing_course_from_database() throws InvalidArgumentException, CourseNotExistError {
 		// Given
 		CourseRepository courseRepo = this.givenAnInMemoryCourseRepository();
-		CourseSaver courseSaver = this.givenACourseSaver(courseRepo);
+		CourseSaver courseSaver = this.givenACourseSaver(courseRepo, this.givenAPublisherMock());
 		Course newValidCourse = CourseMother.create();
 		courseSaver.saveCourse(newValidCourse);
 		CourseFinder courseFinder = this.givenACourseFinder(courseRepo);
@@ -78,11 +80,15 @@ public class InMemoryRepositoyIntegrationTesting {
 		return new InMemoryCourseRepository();
 	}
 
-	private CourseSaver givenACourseSaver(CourseRepository repo) {
-		return new CourseSaver(repo);
+	private CourseSaver givenACourseSaver(CourseRepository repo, DomainEventPublisher publisher) {
+		return new CourseSaver(repo, publisher);
 	}
 
 	private CourseFinder givenACourseFinder(CourseRepository repo) {
 		return new CourseFinder(repo);
+	}
+	
+	private DomainEventPublisher givenAPublisherMock() {
+		return Mockito.mock(DomainEventPublisher.class);
 	}
 }

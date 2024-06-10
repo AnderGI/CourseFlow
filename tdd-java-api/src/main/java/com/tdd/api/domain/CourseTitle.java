@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
-final public class CourseTitle {
+public final class CourseTitle {
 	private String value;
 
 	@JsonCreator

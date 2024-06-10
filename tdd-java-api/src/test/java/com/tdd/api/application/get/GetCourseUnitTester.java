@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.Mockito;
 
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.save_course.CourseSaver;
@@ -16,6 +17,7 @@ import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseIdMother;
 import com.tdd.api.domain.CourseMother;
 import com.tdd.api.domain.CourseRepository;
+import com.tdd.api.domain.events.DomainEventPublisher;
 import com.tdd.api.domain.exceptions.CourseNotExistError;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 import com.tdd.api.infrastructure.bbdd.inmemory.InMemoryCourseRepository;
@@ -93,7 +95,7 @@ public class GetCourseUnitTester {
 	}
 	
 	private CourseSaver givenACourseSaver(CourseRepository repo) {
-		return new CourseSaver(repo);
+		return new CourseSaver(repo, Mockito.mock(DomainEventPublisher.class));
 	}
 
 }

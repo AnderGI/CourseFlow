@@ -3,6 +3,7 @@ package com.tdd.api.application.find_course;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tdd.api.domain.Course;
@@ -15,10 +16,11 @@ import com.tdd.api.domain.exceptions.CourseNotExistError;
 // I will do that by applying DIP 
 // Working against an abstraction not an implementation
 @Service
-final public class CourseFinder {
+public final class CourseFinder {
 
 	private CourseRepository repository;
 	
+	@Autowired
 	public CourseFinder(CourseRepository repository) {
 		this.repository = repository;
 	}

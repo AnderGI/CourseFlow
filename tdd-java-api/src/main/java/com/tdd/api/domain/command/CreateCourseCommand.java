@@ -1,6 +1,6 @@
 package com.tdd.api.domain.command;
 
-final public class CreateCourseCommand implements Command {
+public final class CreateCourseCommand implements Command {
 	private String id;
 	private String title;
 	

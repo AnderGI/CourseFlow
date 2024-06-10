@@ -1,6 +1,6 @@
 package com.tdd.api.domain.query;
 
-final public class FindCourseQuery implements Query {
+public final class FindCourseQuery implements Query {
 	private String uuid;
 	
 	public FindCourseQuery(String id) {

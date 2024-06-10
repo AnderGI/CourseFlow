@@ -6,7 +6,7 @@ import com.tdd.api.domain.command.CommandHandler;
 import com.tdd.api.domain.command.CreateCourseCommand;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
-final public class CreateNewCourseCommandHandler implements CommandHandler<CreateCourseCommand> {
+public final class CreateNewCourseCommandHandler implements CommandHandler<CreateCourseCommand> {
 	private CourseRepository repo = null;
 	private CourseSaver saver = null;
 	
@@ -22,7 +22,6 @@ final public class CreateNewCourseCommandHandler implements CommandHandler<Creat
 		String courseTitle = command.getTitle();
 		Course course = Course.createFromPrimitives(courseId, courseTitle);
 		saver.saveCourse(course);
-		// publish domain event
 	}
 
 }

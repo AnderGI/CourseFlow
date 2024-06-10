@@ -3,7 +3,7 @@ package com.tdd.api.application.find_course;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.tdd.api.application.convert_reponse.CourseJsonResponseConverter;
+import com.tdd.api.application.convert.entity_to_json.CourseJsonResponseConverter;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseId;
 import com.tdd.api.domain.CourseRepository;
@@ -15,7 +15,7 @@ import com.tdd.api.domain.query.QueryHandler;
 import com.tdd.api.domain.response.ResponseConverter;
 
 // json Node should be some kind of videoresponse
-public class FindCourseQueryHandler implements QueryHandler<FindCourseQuery, JsonNode> {
+public final class FindCourseQueryHandler implements QueryHandler<FindCourseQuery, JsonNode> {
 
 	private CourseRepository repo = null;
 	private ResponseConverter converter = null;

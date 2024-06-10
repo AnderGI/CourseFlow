@@ -4,20 +4,22 @@ import org.springframework.stereotype.Service;
 
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.CourseRepository;
+import com.tdd.api.domain.events.DomainEventPublisher;
 
 @Service
-final public class CourseSaver {
+public final class CourseSaver {
 	// Remaining event publisher for RabbitMQ
 	private CourseRepository repo;
-	public CourseSaver(CourseRepository repo) {
+	private DomainEventPublisher publisher;
+	public CourseSaver(CourseRepository repo, DomainEventPublisher publisher) {
 		this.repo = repo;
+		this.publisher = publisher;
 	}
 	
 	// El curso ya llegaria validado
 	// A la hora de instanciarlo ya los ValueObjects lanzan excepcciones
 	public void saveCourse(Course course) {
 		repo.saveCourse(course);
-		// ejemplo publisher
-		// publisher.publish(new CourseCreated(course)) <- CourseCreated es un evento de dominio
+		publisher.publish(course);
 	}
 }

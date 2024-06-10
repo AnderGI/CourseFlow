@@ -1,5 +1,7 @@
 package com.tdd.api.domain.events;
 
-public interface DomainEventPublisher {
+import com.tdd.api.domain.DomainEntity;
 
+public interface DomainEventPublisher {
+	void publish(DomainEntity entity);
 }

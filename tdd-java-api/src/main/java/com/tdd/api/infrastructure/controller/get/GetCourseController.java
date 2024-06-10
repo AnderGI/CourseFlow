@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.application.bus.CourseQueryBusSync;
-import com.tdd.api.application.convert_reponse.CourseJsonResponseConverter;
+import com.tdd.api.application.convert.entity_to_json.CourseJsonResponseConverter;
 import com.tdd.api.application.find_course.CourseFinder;
 import com.tdd.api.application.find_course.FindAllCourseQueryHandler;
 import com.tdd.api.application.find_course.FindCourseQueryHandler;
@@ -31,7 +31,7 @@ import com.tdd.api.infrastructure.jackson.parse_json.ExceptionToJsonNodeFactory;
 import com.tdd.api.infrastructure.jackson.parse_json.JsonCourseParser;
 
 @RestController 
-final public class GetCourseController {
+public final class GetCourseController {
 
 	private final CourseRepository repo;
 	private final JsonCourseParser courseParser;

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tdd.api.domain.exceptions.InvalidArgumentException;
 
-final public class Course {
+public final class Course implements DomainEntity{
 	private CourseId id;
 	private CourseTitle title;
 

@@ -12,7 +12,7 @@ import com.tdd.api.domain.query.QueryHandler;
 
 
 // All logic related with registering and mapping queries with quiery handlers
-public class CourseQueryBusSync implements QueryBus {
+public final class CourseQueryBusSync implements QueryBus {
     private final Map<Class<? extends Query>, QueryHandler> handlers = new HashMap<>();
 
     @Override

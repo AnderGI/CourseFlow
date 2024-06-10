@@ -1,4 +1,4 @@
-package com.tdd.api.application.convert_reponse;
+package com.tdd.api.application.convert.entity_to_json;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tdd.api.domain.Course;
 import com.tdd.api.domain.response.ResponseConverter;
 
-final public class CourseJsonResponseConverter implements ResponseConverter {
+public final class CourseJsonResponseConverter implements ResponseConverter {
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	
