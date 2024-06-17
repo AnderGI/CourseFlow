@@ -1,6 +1,7 @@
 package com.tdd.api;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -23,8 +24,8 @@ import com.tdd.api.infrastructure.database.inmemory.InMemoryCourseRepository;
 import com.tdd.api.infrastructure.publishers.rabbitmq.RabbitMqCourseEventPublisher;
 
 @Configuration
-@Profile("dev")
-public class DevConfig {
+@Profile("testing")
+public class TestingConfig {
 	@Bean
 	public CourseRepository courseRepository() {
 		return new InMemoryCourseRepository();
@@ -32,6 +33,11 @@ public class DevConfig {
 	@Bean
 	public ResponseConverter responseConverter() {
 		return new CourseJsonResponseConverter();
+	}
+	
+	@Bean
+	public TopicExchange topicExchange() {
+		return new TopicExchange("domain_events_testing");
 	}
 	
 	@Bean
@@ -51,7 +57,7 @@ public class DevConfig {
 
 	@Bean
 	public Queue exampleQueue() {
-		return new Queue("created.courses.dev", true);
+		return new Queue("courses.course.notify_users_on_course_created.testing", true);
 	}
 
 	@Bean
@@ -66,7 +72,7 @@ public class DevConfig {
 
 	@Bean
 	public DomainEventPublisher publisher(RabbitTemplate rabbitTemplate, Queue queue, EventBus bus,
-			DomainEntityHandler converter) {
-		return new RabbitMqCourseEventPublisher(rabbitTemplate, queue, bus, converter);
+			DomainEntityHandler converter, TopicExchange topicExchange) {
+		return new RabbitMqCourseEventPublisher(rabbitTemplate, queue, bus, converter, topicExchange);
 	}
 }

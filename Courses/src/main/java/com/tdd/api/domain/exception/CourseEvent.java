@@ -18,4 +18,7 @@ public final class CourseEvent implements DomainEvent{
 		return this.data.toString();
 	}
 
+	public String getRoutingKey() {
+		return this.data.getType();
+	}
 }

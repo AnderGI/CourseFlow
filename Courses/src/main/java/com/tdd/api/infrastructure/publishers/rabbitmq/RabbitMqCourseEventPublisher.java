@@ -1,6 +1,7 @@
 package com.tdd.api.infrastructure.publishers.rabbitmq;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,12 +19,16 @@ public class RabbitMqCourseEventPublisher implements DomainEventPublisher {
     private final Queue queue;
     private final EventBus bus;
     private final DomainEntityHandler converter;
+    private final TopicExchange topicExchange;
     @Autowired
-    public RabbitMqCourseEventPublisher(RabbitTemplate rabbitTemplate, Queue queue, EventBus bus, DomainEntityHandler converter) {
+    public RabbitMqCourseEventPublisher(RabbitTemplate rabbitTemplate, 
+    		Queue queue, EventBus bus, 
+    		DomainEntityHandler converter, TopicExchange topicExchange) {
         this.rabbitTemplate = rabbitTemplate;
         this.queue = queue;
         this.bus = bus;
         this.converter = converter;
+        this.topicExchange = topicExchange;
     }
 
     @Override
@@ -34,7 +39,9 @@ public class RabbitMqCourseEventPublisher implements DomainEventPublisher {
         // event
         CourseEvent event = this.bus.dispatch(entity);
         CourseEventToJsonConverter converter = new CourseEventToJsonConverter();       
-        rabbitTemplate.convertAndSend(queue.getName(), ((JsonNode) converter.convert(event)).toString());
+        rabbitTemplate.convertAndSend(
+        		topicExchange.getName(), event.getRoutingKey(),
+        		((JsonNode) converter.convert(event)).toString());
         
     }
 }

@@ -21,13 +21,13 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.tdd.api.DevConfig;
+import com.tdd.api.TestingConfig;
 import com.tdd.api.domain.CourseMother;
 import com.tdd.api.domain.course.Course;
 
 @WebMvcTest
-@ActiveProfiles("dev")
-@Import(DevConfig.class)
+@ActiveProfiles("testing")
+@Import(TestingConfig.class)
 public class PostCoursesWebControllerTest {
 	@Autowired
 	private ObjectMapper mapper;

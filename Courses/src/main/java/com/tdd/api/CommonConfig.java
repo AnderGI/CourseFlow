@@ -1,6 +1,7 @@
 package com.tdd.api;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -44,6 +45,11 @@ public class CommonConfig {
 		return new CourseFinder(courseRepository);
 	}
 	
+	@Bean
+	public TopicExchange topicExchange() {
+		return new TopicExchange("domain_events");
+	}
+	
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory factory = new CachingConnectionFactory();
@@ -54,14 +60,16 @@ public class CommonConfig {
         return factory;
     }
 
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        return new RabbitTemplate(connectionFactory);
-    }
+    
+	@Bean
+	public DomainEventPublisher publisher(RabbitTemplate rabbitTemplate, Queue queue, EventBus bus,
+			DomainEntityHandler converter, TopicExchange topicExchange) {
+		return new RabbitMqCourseEventPublisher(rabbitTemplate, queue, bus, converter, topicExchange);
+	}
 
     @Bean
     public Queue exampleQueue() {
-        return new Queue("created.courses", true);
+        return new Queue("courses.course.notify_users_on_course_created", true);
     }
     
     @Bean
@@ -72,10 +80,6 @@ public class CommonConfig {
     @Bean
     public DomainEntityHandler domainEntityConverter() {
     	return new CourseToEventHandler();
-    }
-    @Bean
-    public DomainEventPublisher publisher(RabbitTemplate rabbitTemplate, Queue queue, EventBus bus, DomainEntityHandler converter) {
-        return new RabbitMqCourseEventPublisher(rabbitTemplate, queue, bus, converter);
     }
 	
 	@Bean

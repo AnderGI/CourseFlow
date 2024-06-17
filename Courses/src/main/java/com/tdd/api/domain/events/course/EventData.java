@@ -55,4 +55,7 @@ public final class EventData {
 				+ ", meta=" + meta + "]";
 	}
 
+	public String getType() {
+		return this.type;
+	}
 }

@@ -27,7 +27,7 @@ public class CourseToEventHandler implements DomainEntityHandler<CourseEvent, Co
 			e.printStackTrace();
 		}
 		EventData data = EventData.create().withId()
-				.withType("course.created")
+				.withType("agi.courses.1.event.course.created")
 				.ocurredOn(new Date())
 				.withAttributes(attributes)
 				.withMeta(meta);

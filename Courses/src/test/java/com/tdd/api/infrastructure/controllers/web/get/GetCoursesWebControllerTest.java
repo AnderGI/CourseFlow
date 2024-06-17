@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tdd.api.DevConfig;
+import com.tdd.api.TestingConfig;
 import com.tdd.api.application.converters.exception.ExceptionToJsonNodeFactory;
 import com.tdd.api.application.converters.response.ResponseConverter;
 import com.tdd.api.application.converters.response.json.CourseJsonResponseConverter;
@@ -30,8 +30,8 @@ import com.tdd.api.domain.exception.CourseNotExistException;
 import com.tdd.api.infrastructure.database.inmemory.InMemoryCourseRepository;
 
 @WebMvcTest
-@ActiveProfiles("dev")
-@Import(DevConfig.class)
+@ActiveProfiles("testing")
+@Import(TestingConfig.class)
 public class GetCoursesWebControllerTest {
 
 	@Autowired
