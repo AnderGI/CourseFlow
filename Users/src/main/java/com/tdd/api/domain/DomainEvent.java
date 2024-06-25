@@ -1,5 +1,5 @@
 package com.tdd.api.domain;
 
-public interface DomainEntity {
+public interface DomainEvent {
 
 }

@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdd.api.application.converters.response.ResponseConverter;
@@ -23,6 +24,7 @@ import com.tdd.api.infrastructure.database.inmemory.InMemoryCourseRepository;
 import com.tdd.api.infrastructure.publishers.rabbitmq.RabbitMqCourseEventPublisher;
 
 @Configuration
+@Profile("dev")
 public class CommonConfig {
 	
 	@Bean
