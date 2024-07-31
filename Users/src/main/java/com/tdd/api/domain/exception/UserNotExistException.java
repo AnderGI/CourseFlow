@@ -1,6 +1,5 @@
 package com.tdd.api.domain.exception;
 
-import com.tdd.api.domain.user.UserEmail;
 import com.tdd.api.domain.user.UserId;
 
 public final class UserNotExistException extends Exception{

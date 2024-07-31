@@ -1,0 +1,176 @@
+{
+  "name": "Courses Email Sender",
+  "nodes": [
+    {
+      "parameters": {
+        "queue": "users.notify_users_on_full_course_creation",
+        "options": {
+          "binding": {
+            "bindings": [
+              {
+                "exchange": "domain_events",
+                "routingKey": "agi.users.*.event.full-course-created"
+              }
+            ]
+          }
+        }
+      },
+      "id": "17fb41f5-591d-4a3a-81e4-1f3a3147a1f2",
+      "name": "RabbitMQ Trigger",
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        240
+      ],
+      "credentials": {
+        "rabbitmq": {
+          "id": "hl7e4iltPseS0CSL",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = [];\nconst content = items[0]?.json?.content;\ndata.push(JSON.parse(content));\nreturn data;"
+      },
+      "id": "7538faba-082b-45ec-aad7-3f273ccc08ed",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = [];\nconst info = items[0]?.json?.message?.content?.messages;\ndata.push(info);\nreturn data;"
+      },
+      "id": "db5ea69a-addf-4040-a0b4-d8a704cfae0b",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "ander.gutierrez.ibarguen@zabalburu.org",
+        "subject": "NEW COURSEEEE 🚀🚀🚀",
+        "emailType": "text",
+        "message": "=Subject: 🚀 Level Up with Our New Course: Mastering Tomorrow's Tech Today! 🌟  \nHi there,  {{ $json[\"eng\"][\"value\"] }}  Don't miss out on this incredible opportunity to advance your tech skills. Whether you're looking to dive into hands-on projects, attend expert-led webinars, or connect with a community of like-minded learners, this course has it all.  Start your journey now and become a tech master! ⏳  \nBest regards, \n[Your Company Name]  \n---  \nAsunto: 🚀 Mejora tus habilidades con nuestro nuevo curso: Dominando la Tecnología del Mañana Hoy! 🌟  \nHola,  {{ $json[\"esp\"][\"value\"] }}  No pierdas esta increíble oportunidad de avanzar en tus habilidades tecnológicas. Ya sea que estés buscando participar en proyectos prácticos, asistir a seminarios web dirigidos por expertos o conectarte con una comunidad de aprendices como tú, este curso lo tiene todo.  Comienza tu viaje ahora y conviértete en un maestro de la tecnología! ⏳  \nSaludos cordiales, \n[Nombre de Tu Empresa]",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "be015cdd-4be4-4045-b7df-e2685f0111f5",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1660,
+        240
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Lx5maaMQDiuS0BSv",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Craft a message in English and Spanish that creatively announces the creation of this new course, ensuring it sounds engaging and somewhat informal. Highlight the course's title, unique features, and why users should be excited about it. Include a sense of urgency or excitement to encourage immediate action. The output should be in JSON format with English and Spanish messages.\n\nThe output should be formatted like this:\n\njson\nCopiar código\n{\n  \"messages\": {\n    \"eng\": {\n      \"value\": \"Your creative and engaging English message here.\"\n    },\n    \"esp\": {\n      \"value\": \"Your creative and engaging Spanish message here.\"\n    }\n  }\n}\nMake sure the messages are vibrant, engaging, and slightly informal, encouraging users to take immediate action.\nHere is the data you will use\n {{ $json.data }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "id": "35dd7453-e214-460c-bf5f-04860fdbb3cb",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        1060,
+        240
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "w3AKXG6cPH0Rr3BQ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RabbitMQ Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "68a73862-1f7e-4900-8bb1-b2ec520343b3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1af69bad1cbf7b264982c351ea210695da3a4ef7ad6f2d003073bc1fbfdc6055"
+  },
+  "id": "nFmBf3DWI9wZlv2q",
+  "tags": []
+}

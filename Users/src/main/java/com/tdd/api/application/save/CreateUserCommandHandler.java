@@ -1,7 +1,6 @@
 package com.tdd.api.application.save;
 
 import com.tdd.api.domain.command.CommandHandler;
-import com.tdd.api.domain.exception.InvalidArgumentException;
 import com.tdd.api.domain.user.User;
 import com.tdd.api.domain.user.UserEmail;
 import com.tdd.api.domain.user.UserId;

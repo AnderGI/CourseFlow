@@ -3,9 +3,9 @@ package com.tdd.api.application.event;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.tdd.api.domain.event.command.EventCommand;
-import com.tdd.api.domain.event.command.EventCommandBus;
-import com.tdd.api.domain.event.command.EventCommandHandler;
+import com.tdd.api.domain.event.EventCommand;
+import com.tdd.api.domain.event.EventCommandBus;
+import com.tdd.api.domain.event.EventCommandHandler;
 
 public class EventCommandBusSync implements EventCommandBus {
 	private Map<Class<? extends EventCommand>, EventCommandHandler> eventCommandToHandlerMap = 

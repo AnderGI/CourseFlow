@@ -2,7 +2,6 @@ package com.tdd.api.infrastructure.controllers.web.post;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.tdd.api.application.convert.exception.ExceptionToJsonNodeFactory;
+import com.tdd.api.application.exception_converter.ExceptionToJsonNodeFactory;
 import com.tdd.api.domain.exception.InvalidArgumentException;
 import com.tdd.api.domain.user.User;
 import com.tdd.api.domain.user.UserMother;

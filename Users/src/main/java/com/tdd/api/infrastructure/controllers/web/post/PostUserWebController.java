@@ -1,7 +1,5 @@
 package com.tdd.api.infrastructure.controllers.web.post;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.tdd.api.application.convert.exception.ExceptionToJsonNodeFactory;
+import com.tdd.api.application.exception_converter.ExceptionToJsonNodeFactory;
 import com.tdd.api.application.save.CreateUserCommand;
 import com.tdd.api.application.save.CreateUserCommandHandler;
 import com.tdd.api.application.save.UserCommandBusSync;

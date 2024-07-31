@@ -17,17 +17,22 @@ import com.tdd.api.application.find.CourseFinder;
 import com.tdd.api.application.find.CourseToEventHandler;
 import com.tdd.api.application.save.CourseSaver;
 import com.tdd.api.domain.course.CourseRepository;
-import com.tdd.api.domain.events.DomainEntityHandler;
+import com.tdd.api.domain.events.DomainEntityToEventHandler;
 import com.tdd.api.domain.events.DomainEventPublisher;
 import com.tdd.api.domain.events.course.EventBus;
 import com.tdd.api.infrastructure.database.inmemory.InMemoryCourseRepository;
 import com.tdd.api.infrastructure.publishers.rabbitmq.RabbitMqCourseEventPublisher;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 
 @SpringBootApplication
 @EnableDiscoveryClient
 public class CoursesApplication {
 
 	public static void main(String[] args) {
+		Dotenv dotenv = Dotenv.load();
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(CoursesApplication.class, args);
 	}
 }

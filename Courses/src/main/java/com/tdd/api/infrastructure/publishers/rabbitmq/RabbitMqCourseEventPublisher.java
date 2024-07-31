@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.tdd.api.application.converters.events.json.CourseEventToJsonConverter;
 import com.tdd.api.domain.DomainEntity;
-import com.tdd.api.domain.events.DomainEntityHandler;
+import com.tdd.api.domain.events.DomainEntityToEventHandler;
 import com.tdd.api.domain.events.DomainEventPublisher;
 import com.tdd.api.domain.events.course.EventBus;
 import com.tdd.api.domain.exception.CourseEvent;
@@ -17,31 +17,35 @@ public class RabbitMqCourseEventPublisher implements DomainEventPublisher {
 
     private final RabbitTemplate rabbitTemplate;
     private final Queue queue;
-    private final EventBus bus;
-    private final DomainEntityHandler converter;
+    private final EventBus eventBus;
+    private final DomainEntityToEventHandler entityToEventHandler;
     private final TopicExchange topicExchange;
+    private final CourseEventToJsonConverter eventToJsonConverter;
+
     @Autowired
-    public RabbitMqCourseEventPublisher(RabbitTemplate rabbitTemplate, 
-    		Queue queue, EventBus bus, 
-    		DomainEntityHandler converter, TopicExchange topicExchange) {
+    public RabbitMqCourseEventPublisher(RabbitTemplate rabbitTemplate,
+            Queue queue, EventBus bus,
+            DomainEntityToEventHandler converter, TopicExchange topicExchange,
+            CourseEventToJsonConverter eventToJsonConverter) {
         this.rabbitTemplate = rabbitTemplate;
         this.queue = queue;
-        this.bus = bus;
-        this.converter = converter;
+        this.eventBus = bus;
+        this.entityToEventHandler = converter;
         this.topicExchange = topicExchange;
+        this.eventToJsonConverter = eventToJsonConverter;
     }
 
     @Override
     public void publish(DomainEntity entity) {
-    	// Register in a bus
-        this.bus.register(entity.getClass(), converter);
-        // bus will dispatch the event by calling its method and a converter will convert the domain entity to the
+        // Register in a bus
+        this.eventBus.register(entity.getClass(), entityToEventHandler);
+        // bus will dispatch the event by calling its method and a converter will
+        // convert the domain entity to the
         // event
-        CourseEvent event = this.bus.dispatch(entity);
-        CourseEventToJsonConverter converter = new CourseEventToJsonConverter();       
+        CourseEvent event = this.eventBus.dispatch(entity);
         rabbitTemplate.convertAndSend(
-        		topicExchange.getName(), event.getRoutingKey(),
-        		((JsonNode) converter.convert(event)).toString());
-        
+                topicExchange.getName(), event.getRoutingKey(),
+                ((JsonNode) eventToJsonConverter.convert(event)).toString());
+
     }
 }

@@ -18,8 +18,6 @@ import com.tdd.api.application.save.UserSaver;
 import com.tdd.api.domain.exception.InvalidArgumentException;
 import com.tdd.api.domain.exception.UserNotExistException;
 import com.tdd.api.domain.user.User;
-import com.tdd.api.domain.user.UserEmail;
-import com.tdd.api.domain.user.UserEmailMother;
 import com.tdd.api.domain.user.UserId;
 import com.tdd.api.domain.user.UserIdMother;
 import com.tdd.api.domain.user.UserMother;

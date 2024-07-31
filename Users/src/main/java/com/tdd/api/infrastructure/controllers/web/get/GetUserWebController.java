@@ -3,22 +3,20 @@ package com.tdd.api.infrastructure.controllers.web.get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.tdd.api.application.convert.DomainEntityConverter;
-import com.tdd.api.application.convert.exception.ExceptionToJsonNodeFactory;
+import com.tdd.api.application.exception_converter.ExceptionToJsonNodeFactory;
+import com.tdd.api.application.find.FindAllUsersQuery;
+import com.tdd.api.application.find.FindAllUsersQueryHandler;
+import com.tdd.api.application.find.FindUserByIdQuery;
+import com.tdd.api.application.find.FindUserByIdQueryHandler;
 import com.tdd.api.application.find.UserFinder;
 import com.tdd.api.application.find.UsersQueryBusSync;
-import com.tdd.api.application.find.all.FindAllUsersQuery;
-import com.tdd.api.application.find.all.FindAllUsersQueryHandler;
-import com.tdd.api.application.find.single.FindUserByIdQuery;
-import com.tdd.api.application.find.single.FindUserByIdQueryHandler;
 import com.tdd.api.domain.user.UserRepository;
 
 @RestController

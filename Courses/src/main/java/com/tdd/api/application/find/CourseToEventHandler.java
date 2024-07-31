@@ -5,19 +5,19 @@ import java.net.UnknownHostException;
 import java.util.Date;
 
 import com.tdd.api.domain.course.Course;
-import com.tdd.api.domain.events.DomainEntityHandler;
+import com.tdd.api.domain.events.DomainEntityToEventHandler;
 import com.tdd.api.domain.events.course.EventAttributes;
 import com.tdd.api.domain.events.course.EventData;
 import com.tdd.api.domain.events.course.EventMeta;
 import com.tdd.api.domain.exception.CourseEvent;
 
-public class CourseToEventHandler implements DomainEntityHandler<CourseEvent, Course>{
+public class CourseToEventHandler implements DomainEntityToEventHandler<CourseEvent, Course> {
 
 	@Override
 	public CourseEvent handle(Course entity) {
 		EventAttributes attributes = EventAttributes.create()
 				.withCourseId(entity.getIdValue())
-				.withCourseTitle( entity.getTitleValue());
+				.withCourseTitle(entity.getTitleValue());
 		EventMeta meta = null;
 		try {
 			meta = EventMeta.create()

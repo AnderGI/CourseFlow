@@ -1,0 +1,225 @@
+{
+  "name": "CONSUMER: courses.course.notify_users_on_course_created",
+  "nodes": [
+    {
+      "parameters": {
+        "queue": "courses.course.notify_users_on_course_created",
+        "options": {
+          "binding": {
+            "bindings": [
+              {
+                "exchange": "domain_events",
+                "routingKey": "agi.courses.*.event.course.created"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d35f0551-2484-4d5e-8c5e-db729d8efd3a",
+      "name": "RabbitMQ Trigger",
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        620,
+        240
+      ],
+      "credentials": {
+        "rabbitmq": {
+          "id": "hl7e4iltPseS0CSL",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = [];\nfor(const item of items)\n{\n  const {json} = item;\n  const {content} = json;\n  const jsonData = JSON.parse(content);\n  data.push(jsonData);\n}\nreturn data;"
+      },
+      "id": "28d667bb-a689-4f00-81ac-2d06d6a2c772",
+      "name": "TransformQueueEvents",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst events = [];\nfor (const item of items) {\n  const {attributes} = item?.json?.data;\n  const date = item?.json?.data?.[\"ocurred_on\"];\n  const {title, id} = attributes;\n  events.push({\n    date,\n    \"course\" : {title, id}\n  });\n}\n\nreturn events;"
+      },
+      "id": "0115245b-ae07-48a9-b0f5-43222c6431e8",
+      "name": "FetchEventsData",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "message.content",
+        "options": {}
+      },
+      "id": "e3419f26-8062-435c-b2ed-b837d0eb6cf4",
+      "name": "GetMessageContent",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "function generateUUID() {\n  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\n    const r = Math.random() * 16 | 0,\n      v = c === 'x' ? r : (r & 0x3 | 0x8);\n    return v.toString(16);\n  });\n}\nconst uuid = generateUUID();\nconst title = items[0]?.json?.[\"message.content\"];\nconst date = new Date();\nconst englishInfo = items[2]?.json?.[\"english\"]; \nconst spanishInfo = items[2]?.json?.[\"spanish\"]; \nreturn {\n  \"event\" : {\n    \"data\": {\n      \"id\": uuid,\n      \"type\": \"agi.llm.1.event.course-description.created\", \n      \"occurred_on\": date, \n      \"attributes\": {\n        title,\n        \"description\":{\n          \"eng\": {\n            \"value\": englishInfo?.[\"courseDescription\"]\n          },\n          \"esp\": {\n            \"value\": spanishInfo?.[\"courseDescription\"]\n          }\n        },\n        \"learning\": {\n          \"eng\": {\n            \"value\": englishInfo?.[\"whatYouWillLearn\"]\n          },\n          \"esp\": {\n            \"value\": spanishInfo?.[\"whatYouWillLearn\"]\n          }          \n        },\n        \"features\": {\n          \"eng\": {\n            \"value\": englishInfo?.[\"additionalFeatures\"]\n          },\n          \"esp\": {\n            \"value\": spanishInfo?.[\"additionalFeatures\"]\n          }          \n        }\n      }\n    }\n}\n}"
+      },
+      "id": "10d4f2e0-ad98-4d7a-9933-c62d85516f7c",
+      "name": "DomainEventTransformer",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "exchange",
+        "exchange": "domain_events",
+        "exchangeType": "topic",
+        "routingKey": "agi.llm.1.event.course-description.created",
+        "options": {
+          "durable": true
+        }
+      },
+      "id": "930ef932-9d7f-4e7c-9640-cb7866b0330f",
+      "name": "RabbitMQ",
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        1980,
+        240
+      ],
+      "credentials": {
+        "rabbitmq": {
+          "id": "hl7e4iltPseS0CSL",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=CONTEXTUALIZATION FOR COURSE DESCRIPTION GPT\nObjective:\nCreate compelling and engaging course descriptions in both English and Spanish. The descriptions should highlight the course's unique features, benefits, and learning outcomes, appealing to a wide audience. Use persuasive language to emphasize the value of each course, and ensure clarity and conciseness while maintaining a professional tone.\n\nKey Points to Include:\n\nCourse Title: Clearly state the course title.\nCourse Description: Provide a detailed description of what the course covers, its goals, and any unique features.\nWhat You Will Learn: List the key learning outcomes or topics covered in the course.\nAdditional Features: Mention any special features such as language agnostic approach, practical examples, first lesson free, etc.\nLanguage: Ensure the descriptions are available in both English and Spanish.\nKnowledge Base:\n\nCourse 1: Comunicación entre microservicios: Event-Driven Architecture\n\nCourse Description: In this course, you will learn to define your queue structure using either RabbitMQ or AWS and manage the issues arising from event consumption, enabling you to begin migrating portions of your monolith to small, autonomous, and scalable services.\n\nWhat You Will Learn:\n\nIdentify limitations of continuing to use a monolith\nPros and cons of defining services sharing a database\nPros and cons of communicating services via HTTP APIs\nUnderstanding circuit breakers, their benefits, and when to use them\nReinforce SOLID principles by applying them to service architecture\nDefine the structure of domain events\nComponents of a messaging queue system\nTypes of exchanges and their appropriate use cases\nManage messaging queue errors like unordered and duplicated events\nDefine queue structure in RabbitMQ\nOptimize queue implementation in AWS using SNS and SQS\nPublish and consume events from systems like PHP and Scala\nProgressively migrate from a monolith to microservices\nCourse 2: Testing: Introducción y buenas prácticas\n\nCourse Description: Learn the benefits of testing, how to test, and best practices to avoid making test maintenance a nightmare with Real World™️ examples.\n\nWhat You Will Learn:\n\nFoundations of Testing: No prior testing knowledge required.\nExamples in PHP, Java, JavaScript, Scala\nUnderstanding what a unit is in unit testing\nTest Pyramid\nShould we aim for 100% code coverage?\nAvoiding complex instantiations: ObjectMother\nPreventing slow and coupled tests: Fakes, Stubs, and Mocks\nSolving flaky tests\nAvoiding tests that pass but result in production failures\nEnhancing the maintainability and structure of tests\nApplying the Single Responsibility Principle from SOLID to tests\nGiven-When-Then or Arrange-Act-Assert pattern\nAdding readability and semantics to tests\nAdditional test doubles like Dummy and Spy\nSummary of TDD (Test-Driven Development)\nRefactoring: Tips for adding tests to an existing application\nDealing with legacy code: Opportunities for adding tests\nCourse 3: CQRS: Command Query Responsibility Segregation\n\nCourse Description: Learn what CQRS is and understand the concept of buses (covering both synchronous and asynchronous implementations) in a programming language-agnostic manner.\n\nWhat You Will Learn:\n\nKey Differences: Commands vs. queries\nBus Implementation: Language-agnostic examples in PHP and Scala\nAsynchronous Handling: Effective techniques\nResource Identifiers: Importance of sending from clients\nSolid Foundations: Prepares you for Event Sourcing course\nCourse 4: Arquitectura Hexagonal\n\nCourse Description: Learn the fundamentals of Hexagonal Architecture and how to put it into practice!\n\nWhat You Will Learn:\n\nIntroduction to Hexagonal Architecture: Layers and dependency rule\nPorts and Adapters / Dependency Inversion Principle: SOLID principles revisited\nModeling Our Domain and Recording Events\nApplication Services vs. Domain Services\nTesting: Defining strategy and examples\nLanguage-Agnostic Approach with Practical Examples in PHP and Scala\nCourse 5: Principios SOLID aplicados\n\nCourse Description: Learn to develop easy-to-maintain, decoupled, and change-tolerant software with SOLID principles through practical, enjoyable code examples.\n\nWhat You Will Learn:\n\nIdentify coupled code and harmful design patterns\nUML: Understanding key parts\nSingle Responsibility Principle (SRP)\nOpen/Closed Principle (OCP)\nLiskov Substitution Principle (LSP)\nInterface Segregation Principle (ISP)\nDependency Inversion Principle (DIP)\nPracticing SOLID with the GildedRose kata\nSpecification pattern in the Real World™️\nComposition over Inheritance\nFunctional Programming vs. SOLID\nConclusions and Next Steps\nCourse 6: Patrones de Diseño: Criteria\n\nCourse Description: Utilize the Criteria Design Pattern to adhere to SOLID principles in your use cases and repositories.\n\nWhat You Will Learn:\n\nImplementing the Criteria Pattern with SQL\nImplementing the Criteria Pattern with Elasticsearch\nAdding Pagination to the Criteria Pattern\nCourse 7: Introducción a Scala\n\nCourse Description: Learn the essential concepts of Scala to start developing your first application in this language.\n\nWhat You Will Learn:\n\nPros and Cons of Scala\nSetting Up Your Development Environment\nCreating Your First Scala Project\nLanguage Basics: var, val, def\nControl Flow: Unique aspects of Scala\nHigher-Order Functions, Lambda Expressions, and Currying\nGenerics\nClasses and Objects: Differences and uses\nIntroduction to ScalaTest\nModeling with Enums and Traits\nManaging Asynchrony with Futures\nCourse 8: Domain-Driven Design - DDD Aplicado\n\nCourse Description: Learn how to model your applications by focusing on your domain, defining Bounded Contexts, aggregates, value objects, and more.\n\nWhat You Will Learn:\n\nDefining Bounded Contexts and Modules\nFolder structure in a monorepository\nImplementation examples in PHP, Java, and Scala\nHexagonal Architecture in DDD\nModeling with Value Objects\nAggregates and Aggregate roots\nRepository Pattern\nCommunication between Modules and Bounded Contexts\nMigrating from Legacy Systems with the Anti-corruption Layer\nDomain Events\nShared Kernel\nCQRS in DDD\nPromoting a Module to a Bounded Context\nUbiquitous Language\nCourse 9: CS50: Introduction to Computer Science\n\nCourse Description: An entry-level course from Harvard University that teaches students how to think algorithmically and solve problems efficiently.\n\nWhat You Will Learn:\n\nA broad understanding of computer science and programming\nKey concepts like abstraction, algorithms, data structures, encapsulation, resource management, security, software engineering, and web development\nProgramming languages: C, Python, SQL, JavaScript, CSS, HTML\nProblem sets inspired by real-world domains\nSelf-paced learning with certification options\nGuidelines:\n\nUse persuasive language to highlight the value and benefits of each course.\nEmphasize any unique aspects or advantages that make the course stand out.\nEnsure descriptions are clear, concise, and free of jargon.\nMaintain a professional tone that appeals to both English and Spanish-speaking audiences.\n### Information from which to generate description ###\n{\n\"date\" : {{ $json.date }},\n\"course-title\": {{ $json.course.title }},\n\"course-id\": {{ $json.course.id }}\n}  "
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "id": "3c7f360f-52a4-4c55-ae6b-c8ca62ac4f6f",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        1220,
+        240
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "w3AKXG6cPH0Rr3BQ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RabbitMQ Trigger": {
+      "main": [
+        [
+          {
+            "node": "TransformQueueEvents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TransformQueueEvents": {
+      "main": [
+        [
+          {
+            "node": "FetchEventsData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchEventsData": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetMessageContent": {
+      "main": [
+        [
+          {
+            "node": "DomainEventTransformer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DomainEventTransformer": {
+      "main": [
+        [
+          {
+            "node": "RabbitMQ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "GetMessageContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7c756c25-6dd6-4659-92b3-93bf4730c0db",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1af69bad1cbf7b264982c351ea210695da3a4ef7ad6f2d003073bc1fbfdc6055"
+  },
+  "id": "CjOsmZCdVJ6YeqiO",
+  "tags": []
+}

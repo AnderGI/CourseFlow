@@ -59,6 +59,11 @@
 			<version>1.0.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+       		<groupId>io.github.cdimascio</groupId>
+       		<artifactId>java-dotenv</artifactId>
+	       	<version>5.2.2</version>
+   		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

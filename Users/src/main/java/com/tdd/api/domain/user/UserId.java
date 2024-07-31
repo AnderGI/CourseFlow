@@ -1,7 +1,5 @@
 package com.tdd.api.domain.user;
 
-import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 import com.tdd.api.domain.exception.InvalidArgumentException;

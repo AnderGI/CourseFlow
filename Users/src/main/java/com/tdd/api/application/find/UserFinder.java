@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.tdd.api.domain.exception.UserNotExistException;
 import com.tdd.api.domain.user.User;
-import com.tdd.api.domain.user.UserEmail;
 import com.tdd.api.domain.user.UserId;
 import com.tdd.api.domain.user.UserRepository;
 

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.tdd.api.domain.user.User;
-import com.tdd.api.domain.user.UserEmail;
 import com.tdd.api.domain.user.UserId;
 import com.tdd.api.domain.user.UserRepository;
 

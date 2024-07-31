@@ -2,10 +2,8 @@ package com.tdd.api.domain.user;
 
 import java.util.Objects;
 
-import com.tdd.api.domain.DomainEvent;
-import com.tdd.api.domain.exception.InvalidArgumentException;
 
-public final class User implements DomainEvent{
+public final class User implements DomainEntity{
 	private UserEmail email;
 	private UserId id;
 	
